@@ -235,5 +235,11 @@ BEGIN
 
 	UPDATE PROMOTION
 	SET PROMOTION.amount = PROMOTION.amount - 1 FROM INSERTED WHERE INSERTED.promotion_id = PROMOTION.promotion_id
+
+	UPDATE CUSTOMER
+	SET CUSTOMER.accumulate_point = dbo.getPoint(temp3.Totall) FROM temp3 WHERE CUSTOMER.customer_id = temp3.customer_id
+
+	UPDATE CUSTOMER
+	SET CUSTOMER._level = dbo.getLevel(CUSTOMER.accumulate_point)
 END
 GO

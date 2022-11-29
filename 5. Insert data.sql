@@ -1966,8 +1966,3 @@ GO
 EXEC insertPAYMENT 'PAY0015',  N'Ghi chú 15',  N'Trạng thái 15', N'Phương thức 15', '20221010',  '12:12', 'ORD0015', 'CUS0015', 'PRO0006'
 GO
 
-UPDATE CUSTOMER
-	SET CUSTOMER.accumulate_point = dbo.getPoint(temp3.Totall) FROM temp3 WHERE CUSTOMER.customer_id = temp3.customer_id
-
-UPDATE CUSTOMER
-	SET CUSTOMER._level = dbo.getLevel(CUSTOMER.accumulate_point)
