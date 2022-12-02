@@ -3,18 +3,15 @@ GO
 
 --************************** TẠO PROCEDURE **********************************
 
--- Bảng CUSTOMER
--- Insert
+-- Bảng CUSTOMER (insert, update, delete)
 CREATE PROCEDURE insertCUSTOMER 
 		@customer_id char(10), 
 		@register_date DATE,					 
 		@f_name nvarchar(10),
 		@l_name nvarchar(20),
-		--@accumulate_point int, 
 		@sex nvarchar(10),
 		@bdate DATE,
-		@_address nvarchar(1000)
-		--@_level int
+		@_address nvarchar(100)
 AS
 BEGIN
 	INSERT INTO CUSTOMER (customer_id, register_date, f_name, l_name, sex, bdate, _address)
@@ -22,17 +19,14 @@ BEGIN
 END
 GO
 
--- Update
 CREATE PROCEDURE updateCUSTOMER
 		@customer_id char(10), 
 		@register_date DATE,					 
 		@f_name nvarchar(10),
 		@l_name nvarchar(20),
-		--@accumulate_point int,
 		@sex nvarchar(10),
 		@bdate DATE,
-		@_address nvarchar(1000)
-		--@_level int
+		@_address nvarchar(100)
 AS
 BEGIN
 	UPDATE CUSTOMER 
@@ -46,7 +40,6 @@ BEGIN
 END
 GO
 
--- Delete
 CREATE PROCEDURE deleteCUSTOMER
 		@customer_id char(10)
 AS
@@ -56,11 +49,9 @@ BEGIN
 END
 GO
 
--- Bảng CART
--- Insert
+-- Bảng CART (Insert, Update, Delete)
 CREATE PROCEDURE insertCART	
 		@cart_id char(10),
-		--@total_money money,
 		@customer_id char(10)
 AS
 BEGIN
@@ -69,10 +60,8 @@ BEGIN
 END
 GO
 
--- Update
 CREATE PROCEDURE updateCART	
 		@cart_id char(10),
-		--@total_money money,
 		@customer_id char(10)
 AS
 BEGIN
@@ -82,7 +71,6 @@ BEGIN
 END
 GO
 
--- Delete
 CREATE PROCEDURE deleteCART	
 		@cart_id char(10)
 AS
@@ -92,8 +80,7 @@ BEGIN
 END
 GO
 
--- Bảng EMPLOYEE
--- Insert
+-- Bảng EMPLOYEE (Insert, Update, Delete)
 CREATE PROCEDURE insertEMPLOYEE	
 		@employee_id char(10),
 		@f_name nvarchar(10),
@@ -114,7 +101,6 @@ BEGIN
 END
 GO
 
--- Insert
 CREATE PROCEDURE insertEMPLOYEE_Temp	
 		@employee_id char(10),
 		@f_name nvarchar(10),
@@ -146,8 +132,6 @@ BEGIN
 END
 GO
 
-
--- Update
 CREATE PROCEDURE updateEMPLOYEE	
 		@employee_id char(10),
 		@f_name nvarchar(10),
@@ -179,7 +163,6 @@ BEGIN
 END
 GO
 
--- Delete
 CREATE PROCEDURE deleteEMPLOYEE	
 		@employee_id char(10)
 AS
@@ -188,8 +171,7 @@ BEGIN
 END
 GO
 
--- Bảng BRANCH
--- Insert
+-- Bảng BRANCH (Insert, Update, Delete)
 CREATE PROCEDURE insertBRANCH	
 			@branch_id char(10),
 			@branch_name nvarchar(30),
@@ -202,7 +184,6 @@ BEGIN
 END
 GO
 
--- Update
 CREATE PROCEDURE updateBRANCH	
 			@branch_id char(10),
 			@branch_name nvarchar(30),
@@ -218,7 +199,6 @@ BEGIN
 END
 GO
 
--- Delete
 CREATE PROCEDURE deleteBRANCH	
 		@branch_id char(10)
 AS
@@ -227,8 +207,7 @@ BEGIN
 END
 GO
 
--- Bảng ACCOUNT
--- Insert account customer
+-- Bảng ACCOUNT (Insert, Update, Delete)
 CREATE PROCEDURE insertACCOUNT_CUS
 		@account_id char(10),
 		@username nvarchar(20),
@@ -242,7 +221,6 @@ BEGIN
 END
 GO
 
--- Insert account employee
 CREATE PROCEDURE insertACCOUNT_EMP
 		@account_id char(10),
 		@username nvarchar(20),
@@ -256,7 +234,6 @@ BEGIN
 END
 GO
 
--- Update account customer
 CREATE PROCEDURE updateACCOUNT_CUS
 		@account_id char(10),
 		@username nvarchar(20),
@@ -274,7 +251,6 @@ BEGIN
 END
 GO
 
--- update account employee
 CREATE PROCEDURE updateACCOUNT_EMP	
 		@account_id char(10),
 		@username nvarchar(20),
@@ -292,7 +268,6 @@ BEGIN
 END
 GO
 
--- Delete
 CREATE PROCEDURE deleteACCOUNT	
 		@account_id char(10)
 AS
@@ -302,8 +277,7 @@ BEGIN
 END
 GO
 
--- Bảng CUSTOMER_PHONE
--- Insert
+-- Bảng CUSTOMER_PHONE (Insert, Delete)
 CREATE PROCEDURE insertCUSTOMER_PHONE		
 		@customer_id char(10),
 		@phone_number nvarchar(20)
@@ -314,7 +288,6 @@ BEGIN
 END
 GO
 
--- Delete
 CREATE PROCEDURE deleteCUSTOMER_PHONE	
 		@customer_id char(10),
 		@phone_number nvarchar(20)	
@@ -325,8 +298,7 @@ BEGIN
 END
 GO
 
--- Bảng CUSTOMER_EMAIL
--- Insert
+-- Bảng CUSTOMER_EMAIL (Insert, Delete)
 CREATE PROCEDURE insertCUSTOMER_EMAIL	
 		@customer_id char(10),
 		@email nvarchar(20)
@@ -337,7 +309,6 @@ BEGIN
 END
 GO
 
--- Delete
 CREATE PROCEDURE deleteCUSTOMER_EMAIL
 		@customer_id char(10),
 		@email nvarchar(20)
@@ -349,8 +320,7 @@ END
 GO
 
 
--- Bảng MATERIAL
--- Insert
+-- Bảng MATERIAL (Insert, Update, Delete)
 CREATE PROCEDURE insertMATERIAL
 		@material_id char(10),
 		@material_name nvarchar(30)
@@ -361,7 +331,6 @@ BEGIN
 END
 GO
 
--- Update
 CREATE PROCEDURE updateMATERIAL
 		@material_id char(10),
 		@material_name nvarchar(30)
@@ -373,7 +342,6 @@ BEGIN
 END
 GO
 
--- Delete
 CREATE PROCEDURE deleteMATERIAL
 		@material_id char(10)
 AS
@@ -382,8 +350,7 @@ BEGIN
 END
 GO
 
--- Bảng MATERIAL_CHARACTERISTIC
--- Insert
+-- Bảng MATERIAL_CHARACTERISTIC (Insert, Delete)
 CREATE PROCEDURE insertMATERIAL_CHARACTERISTIC
 		@material_id char(10),
 		@characteristic nvarchar(30)
@@ -394,7 +361,6 @@ BEGIN
 END
 GO
 
--- Delete
 CREATE PROCEDURE deleteMATERIAL_CHARACTERISTIC
 		@material_id char(10),
 		@characteristic nvarchar(30)	
@@ -405,8 +371,7 @@ BEGIN
 END
 GO
 
--- Bảng CATEGORY
--- Insert
+-- Bảng CATEGORY (Insert, Update, Delete)
 CREATE PROCEDURE insertCATEGORY
 		@category_id char(10),
 		@category_name nvarchar(30)
@@ -417,7 +382,6 @@ BEGIN
 END
 GO
 
--- Update
 CREATE PROCEDURE updateCATEGORY
 		@category_id char(10),
 		@category_name nvarchar(30)
@@ -429,7 +393,6 @@ BEGIN
 END
 GO
 
--- Delete
 CREATE PROCEDURE deleteCATEGORY
 		@category_id char(10)
 AS
@@ -438,8 +401,7 @@ BEGIN
 END
 GO
 
--- Bảng EMPLOYEE_PHONE
--- Insert
+-- Bảng EMPLOYEE_PHONE (Insert, Delete)
 CREATE PROCEDURE insertEMPLOYEE_PHONE	
 		@employee_id char(10),
 		@phone_number nvarchar(20)
@@ -450,7 +412,6 @@ BEGIN
 END
 GO
 
--- Delete
 CREATE PROCEDURE deleteEMPLOYEE_PHONE
 		@employee_id char(10),
 		@phone_number nvarchar(20)	
@@ -461,8 +422,7 @@ BEGIN
 END
 GO
 
--- Bảng EMPLOYEE_EMAIL
--- Insert
+-- Bảng EMPLOYEE_EMAIL (Insert, Delete)
 CREATE PROCEDURE insertEMPLOYEE_EMAIL
 		@employee_id char(10),
 		@email nvarchar(20)
@@ -473,7 +433,6 @@ BEGIN
 END
 GO
 
--- Delete
 CREATE PROCEDURE deleteEMPLOYEE_EMAIL	
 		@employee_id char(10),
 		@email nvarchar(20)
@@ -484,8 +443,7 @@ BEGIN
 END
 GO
 
--- Bảng SHOWROOM_BRANCH
--- Insert
+-- Bảng SHOWROOM_BRANCH (Insert, Delete)
 CREATE PROCEDURE insertSHOWROOM_BRANCH
 		@branch_id char(10)
 AS
@@ -495,7 +453,6 @@ BEGIN
 END
 GO
 
--- Delete
 CREATE PROCEDURE deleteSHOWROOM_BRANCH
 		@branch_id char(10)
 AS
@@ -505,7 +462,7 @@ BEGIN
 END
 GO
 
--- Bảng ONLINE_BRANCH
+-- Bảng ONLINE_BRANCH (Insert, Delete)
 CREATE PROCEDURE insertONLINE_BRANCH
 		@branch_id char(10)
 AS
@@ -515,7 +472,6 @@ BEGIN
 END
 GO
 
--- Delete
 CREATE PROCEDURE deleteONLINE_BRANCH
 		@branch_id char(10)
 AS
@@ -525,8 +481,7 @@ BEGIN
 END
 GO
 
--- Bảng FURNITURE
--- Insert
+-- Bảng FURNITURE (Insert, Update, Delete)
 CREATE PROCEDURE insertFURNITURE
 		@furniture_id char(10),
 		@branch_id char(10),
@@ -539,7 +494,6 @@ BEGIN
 END
 GO
 
--- Update
 CREATE PROCEDURE updateFURNITURE
 		@furniture_id char(10),
 		@branch_id char(10),
@@ -554,7 +508,6 @@ BEGIN
 END
 GO
 
--- Delete
 CREATE PROCEDURE deleteFURNITURE
 		@furniture_id char(10),
 		@branch_id char(10)
@@ -565,15 +518,12 @@ BEGIN
 END
 GO
 
--- Bảng _ORDER
--- Insert
+-- Bảng _ORDER (Insert, Update, Delete)
 CREATE PROCEDURE insert_ORDER	
 		@order_id char(10),
 		@order_name nvarchar(30),
 		@order_date DATE,
 		@order_hour TIME,
-		--@total_money money,
-		--@amount int,
 		@customer_id char(10),
 		@employee_id char(10)
 AS
@@ -583,14 +533,11 @@ BEGIN
 END
 GO
 
--- Update
 CREATE PROCEDURE update_ORDER
 		@order_id char(10),
 		@order_name nvarchar(30),
 		@order_date DATE,
 		@order_hour TIME,
-		--@total_money money,
-		--@amount int,
 		@customer_id char(10),
 		@employee_id char(10)	
 AS
@@ -605,7 +552,6 @@ BEGIN
 END
 GO
 
--- Delete
 CREATE PROCEDURE delete_ORDER	
 		@order_id char(10)
 AS
@@ -615,8 +561,7 @@ BEGIN
 END
 GO
 
--- Bảng ORDER_BRANCH
--- Insert
+-- Bảng ORDER_BRANCH (Insert, Update, Delete)
 CREATE PROCEDURE insertORDER_BRANCH 
 		@order_id char(10),
 		@branch_id char(10)
@@ -627,7 +572,6 @@ BEGIN
 END
 GO
 
--- Update
 CREATE PROCEDURE updateORDER_BRANCH 
 		@order_id char(10),
 		@branch_id char(10)
@@ -639,7 +583,6 @@ BEGIN
 END
 GO
 
--- Delete
 CREATE PROCEDURE deleteORDER_BRANCH 
 		@order_id char(10)
 AS
@@ -649,8 +592,7 @@ BEGIN
 END
 GO
 
--- Bảng PROMOTION
--- Insert
+-- Bảng PROMOTION (Insert, Update, Delete)
 CREATE PROCEDURE insertPROMOTION
 		@promotion_id char(10),
 		@promotion_name nvarchar(30),
@@ -671,7 +613,6 @@ BEGIN
 END
 GO
 
--- Update
 CREATE PROCEDURE updatePROMOTION
 		@promotion_id char(10),
 		@promotion_name nvarchar(30),
@@ -703,7 +644,6 @@ BEGIN
 END
 GO
 
--- Delete
 CREATE PROCEDURE deletePROMOTION
 	@promotion_id char(10)
 AS
@@ -713,17 +653,14 @@ BEGIN
 END
 GO
 
--- Bảng PAYMENT
--- Insert
+-- Bảng PAYMENT (insert, Update, Delete)
 CREATE PROCEDURE insertPAYMENT
 		@payment_id char(10),
 		@payment_note nvarchar(100),
-		--@total_money money,
 		@payment_status nvarchar(30),
 		@payment_method nvarchar(30),
 		@payment_date DATE,
 		@payment_hour TIME,
-		--@accumulate_point int,
 		@order_id char(10),
 		@customer_id char(10),
 		@promotion_id char(10)
@@ -734,16 +671,13 @@ BEGIN
 END
 GO
 
--- Update
 CREATE PROCEDURE updatePAYMENT
 		@payment_id char(10),
 		@payment_note nvarchar(100),
-		--@total_money money,
 		@payment_status nvarchar(30),
 		@payment_method nvarchar(30),
 		@payment_date DATE,
 		@payment_hour TIME,
-		--@accumulate_point int,
 		@order_id char(10),
 		@customer_id char(10),
 		@promotion_id char(10)
@@ -762,7 +696,6 @@ BEGIN
 END
 GO
 
--- Delete
 CREATE PROCEDURE deletePAYMENT
 		@payment_id char(10)
 AS
@@ -772,8 +705,7 @@ BEGIN
 END
 GO
 
--- Bảng SHIPPING
--- Insert
+-- Bảng SHIPPING (Insert, Update, Delete)
 CREATE PROCEDURE insertSHIPPING	
 		@shipping_id char(10),
 		@shipping_name nvarchar(30)
@@ -784,7 +716,6 @@ BEGIN
 END
 GO
 
--- Update
 CREATE PROCEDURE updateSHIPPING	
 		@shipping_id char(10),
 		@shipping_name nvarchar(30)
@@ -796,7 +727,6 @@ BEGIN
 END
 GO
 
--- Delete
 CREATE PROCEDURE deleteSHIPPING	
 		@shipping_id char(10)
 AS
@@ -806,8 +736,7 @@ BEGIN
 END
 GO
 
--- Bảng ORDER_ONLINE
--- Insert
+-- Bảng ORDER_ONLINE (Insert, Update, Delete)
 CREATE PROCEDURE insertORDER_ONLINE
 		@order_id char(10),
 		@branch_id char(10),
@@ -827,7 +756,6 @@ BEGIN
 END
 GO
 
--- Update
 CREATE PROCEDURE updateORDER_ONLINE
 		@order_id char(10),
 		@branch_id char(10),
@@ -857,7 +785,6 @@ BEGIN
 END
 GO
 
--- Delete
 CREATE PROCEDURE deleteORDER_ONLINE
 		@order_id char(10)
 AS
@@ -867,8 +794,7 @@ BEGIN
 END
 GO
 
--- Bảng SUPPLIER
--- Insert
+-- Bảng SUPPLIER (Insert, Update, Delete)
 CREATE PROCEDURE insertSUPPLIER	
 		@supplier_id char(10),
 		@supplier_name nvarchar(30),
@@ -880,7 +806,6 @@ BEGIN
 END
 GO
 
--- Update
 CREATE PROCEDURE updateSUPPLIER	
 		@supplier_id char(10),
 		@supplier_name nvarchar(30),
@@ -894,7 +819,6 @@ BEGIN
 END
 GO
 
--- Delete
 CREATE PROCEDURE deleteSUPPLIER	
 		@supplier_id char(10)
 AS
@@ -904,8 +828,7 @@ BEGIN
 END
 GO
 
--- Bảng SUPPLIER_PHONE
--- Insert
+-- Bảng SUPPLIER_PHONE (Insert, Delete)
 CREATE PROCEDURE insertSUPPLIER_PHONE	
 		@supplier_id char(10),
 		@phone_num nvarchar(20)
@@ -916,7 +839,6 @@ BEGIN
 END
 GO
 
--- Delete
 CREATE PROCEDURE deleteSUPPLIER_PHONE	
 		@supplier_id char(10),
 		@phone_num nvarchar(20)
@@ -927,8 +849,7 @@ BEGIN
 END
 GO
 
--- Bảng PRODUCT
--- Insert
+-- Bảng PRODUCT (Insert, Update, Delete)
 CREATE PROCEDURE insertPRODUCT	
 		@product_id char(10),
 		@product_name nvarchar(100),
@@ -936,7 +857,6 @@ CREATE PROCEDURE insertPRODUCT
 		@illustration nvarchar(500),
 		@entry_price money,
 		@sell_price money,
-		--@amount int,
 		@category_id char(10),
 		@supplier_id char(10)
 AS
@@ -946,7 +866,6 @@ BEGIN
 END
 GO
 
--- Update
 CREATE PROCEDURE updatePRODUCT	
 		@product_id char(10),
 		@product_name nvarchar(100),
@@ -954,7 +873,6 @@ CREATE PROCEDURE updatePRODUCT
 		@illustration nvarchar(500),
 		@entry_price money,
 		@sell_price money,
-		--@amount int,
 		@category_id char(10),
 		@supplier_id char(10)
 AS
@@ -965,14 +883,12 @@ BEGIN
 		illustration = @illustration, 
 		entry_price = @entry_price, 
 		sell_price = @sell_price, 
-		--amount = @amount, 
 		category_id = @category_id, 
 		supplier_id = @supplier_id
 	WHERE product_id = @product_id
 END
 GO
 
--- Delete
 CREATE PROCEDURE deletePRODUCT
 		@product_id char(10)	
 AS
@@ -982,11 +898,10 @@ BEGIN
 END
 GO
 
--- Bảng CART_PRODUCT
+-- Bảng CART_PRODUCT (Insert, Update, Delete)
 CREATE PROCEDURE insertCART_PRODUCT
 		@product_id char(10),
 		@cart_id char(10),
-		--@sell_price money,
 		@amount int
 AS
 BEGIN
@@ -998,7 +913,6 @@ GO
 CREATE PROCEDURE updateCART_PRODUCT
 		@product_id char(10),
 		@cart_id char(10),
-		--@sell_price money,
 		@amount int
 AS
 BEGIN
@@ -1009,7 +923,6 @@ BEGIN
 END
 GO
 
--- Delete
 CREATE PROCEDURE deleteCART_PRODUCT
 		@product_id char(10),
 		@cart_id char(10)
@@ -1020,8 +933,7 @@ BEGIN
 END
 GO
 
--- Bảng CLOTHES
--- Insert
+-- Bảng CLOTHES (Insert, Delete)
 CREATE PROCEDURE insertCLOTHES	
 		@clothes_id char(10),
 		@product_id char(10),
@@ -1036,27 +948,6 @@ BEGIN
 END
 GO
 
--- Update
-CREATE PROCEDURE updateCLOTHES	
-		@clothes_id char(10),
-		@product_id char(10),
-		@clothes_elastic nvarchar(30),
-		@size varchar(5),
-		@color nvarchar(20),
-		@style nvarchar(30)
-AS
-BEGIN
-	UPDATE CLOTHES 
-	SET product_id = @product_id,
-		clothes_elastic = @clothes_elastic,
-		size = @size,
-		color = @color,
-		style = @style
-	WHERE clothes_id = @clothes_id
-END
-GO
-
--- Delete
 CREATE PROCEDURE deleteCLOTHES	
 		@clothes_id char(10)
 AS
@@ -1066,8 +957,7 @@ BEGIN
 END
 GO
 
--- Bảng SHOE
--- Insert
+-- Bảng SHOE (Insert, Delete)
 CREATE PROCEDURE insertSHOE
 		@shoe_id char(10),
 		@product_id char(10),
@@ -1082,27 +972,6 @@ BEGIN
 END
 GO
 
--- Update
-CREATE PROCEDURE updateSHOE
-		@shoe_id char(10),
-		@product_id char(10),
-		@shoe_elastic nvarchar(30),
-		@color nvarchar(20),
-		@size int,
-		@shoe_type nvarchar(20)
-AS
-BEGIN
-	UPDATE SHOE 
-	SET product_id = @product_id,
-		shoe_elastic = @shoe_elastic, 
-		color = @color, 
-		size = @size, 
-		shoe_type = @shoe_type
-	WHERE shoe_id = @shoe_id
-END
-GO
-
--- Delete
 CREATE PROCEDURE deleteSHOE
 		@shoe_id char(10)
 AS
@@ -1112,8 +981,7 @@ BEGIN
 END
 GO
 
--- Bảng PRODUCT_USE_MATERIAL
--- Insert
+-- Bảng PRODUCT_USE_MATERIAL (Insert, Delete)
 CREATE PROCEDURE insertPRODUCT_USE_MATERIAL	
 		@material_id char(10),
 		@product_id char(10)
@@ -1124,7 +992,6 @@ BEGIN
 END
 GO
 
--- Delete
 CREATE PROCEDURE deletePRODUCT_USE_MATERIAL	
 		@material_id char(10),
 		@product_id char(10)
@@ -1135,12 +1002,10 @@ BEGIN
 END
 GO
 
--- Bảng PRODUCT_OF_ORDER
--- Insert
+-- Bảng PRODUCT_OF_ORDER (Insert, Update, Delete)
 CREATE PROCEDURE insertPRODUCT_OF_ORDER	
 		@order_id char(10),
 		@product_id char(10),
-		--@sell_price money,
 		@amount int
 AS
 BEGIN
@@ -1149,11 +1014,9 @@ BEGIN
 END
 GO
 
--- Update
 CREATE PROCEDURE updatePRODUCT_OF_ORDER
 		@order_id char(10),
 		@product_id char(10),
-		--@sell_price money,
 		@amount int	
 AS
 BEGIN
@@ -1163,7 +1026,6 @@ BEGIN
 END
 GO
 
--- Delete
 CREATE PROCEDURE deletePRODUCT_OF_ORDER
 		@order_id char(10),
 		@product_id char(10)
