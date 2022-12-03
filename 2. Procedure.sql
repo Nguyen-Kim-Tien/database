@@ -2,9 +2,8 @@
 GO
 
 --************************** TẠO PROCEDURE **********************************
-
 -- Bảng CUSTOMER (insert, update, delete)
-CREATE PROCEDURE insertCUSTOMER 
+ALTER PROCEDURE insertCUSTOMER 
 		@customer_id char(10), 
 		@register_date DATE,					 
 		@f_name nvarchar(10),
@@ -14,6 +13,17 @@ CREATE PROCEDURE insertCUSTOMER
 		@_address nvarchar(100)
 AS
 BEGIN
+	IF (@sex <> N'F' and @sex <> N'M' and @sex <> N'Male' and @sex <> N'Female' and @sex <> N'Nam' and @sex <> N'Nữ')
+	BEGIN
+		raiserror (N'Lỗi: Giới tính chỉ có thể là M/Male/F/Female/Nam/Nữ', 16,1)
+		rollback
+	END
+	ELSE IF (YEAR(GETDATE()) - YEAR(@bdate) <= 10) 
+	BEGIN
+		raiserror (N'Lỗi: Tuổi của khách hàng phải trên 10', 16,1)
+		rollback
+	END
+	ELSE 
 	INSERT INTO CUSTOMER (customer_id, register_date, f_name, l_name, sex, bdate, _address)
 	VALUES (@customer_id, @register_date, @f_name, @l_name, @sex, @bdate, @_address)
 END
@@ -29,14 +39,25 @@ CREATE PROCEDURE updateCUSTOMER
 		@_address nvarchar(100)
 AS
 BEGIN
-	UPDATE CUSTOMER 
-	SET	register_date = @register_date, 
-		f_name = @f_name, 
-		l_name = @l_name,  
-		sex = @sex, 
-		bdate = @bdate,
-		_address = @_address
-	WHERE customer_id = @customer_id
+	IF (@sex <> N'F' and @sex <> N'M' and @sex <> N'Male' and @sex <> N'Female' and @sex <> N'Nam' and @sex <> N'Nữ')
+	BEGIN
+		raiserror (N'Lỗi: Giới tính chỉ có thể là M/Male/F/Female/Nam/Nữ', 16,1)
+		rollback
+	END
+	ELSE IF (YEAR(GETDATE()) - YEAR(@bdate) <= 10) 
+	BEGIN
+		raiserror (N'Lỗi: Tuổi của khách hàng phải trên 10', 16,1)
+		rollback
+	END
+	ELSE 
+		UPDATE CUSTOMER 
+		SET	register_date = @register_date, 
+			f_name = @f_name, 
+			l_name = @l_name,  
+			sex = @sex, 
+			bdate = @bdate,
+			_address = @_address
+		WHERE customer_id = @customer_id
 END
 GO
 
@@ -96,8 +117,29 @@ CREATE PROCEDURE insertEMPLOYEE
 		@employee_manage_id char(10)
 AS
 BEGIN
-	INSERT INTO EMPLOYEE
-	VALUES (@employee_id, @f_name, @l_name, @bdate, @sex, @_address, @salary, @degree, @_start_date, @employee_type, @branch_id, @employee_manage_id)
+	IF (YEAR(GETDATE()) - YEAR(@bdate) <= 16)
+	BEGIN
+		raiserror (N'Lỗi: Nhân viên phải trên 16 tuổi', 16,1)
+		rollback
+	END
+	ELSE IF (@sex <> N'F' and @sex <> N'M' and @sex <> N'Male' and @sex <> N'Female' and @sex <> N'Nam' and @sex <> N'Nữ')
+	BEGIN
+		raiserror (N'Lỗi: Giới tính chỉ có thể là M/Male/F/Female/Nam/Nữ', 16,1)
+		rollback
+	END
+	ELSE IF (@salary <= 5000000) 
+	BEGIN
+		raiserror (N'Lỗi: Lương của nhân viên phải trên 5000000', 16,1)
+		rollback
+	END
+	ELSE IF @salary > (SELECT e.salary FROM EMPLOYEE e WHERE @employee_manage_id = e.employee_manage_id)
+	BEGIN
+		raiserror (N'Lỗi: Lương của nhân viên phải nhỏ hơn lương của người quản lý nhân viên đó', 16,1)
+		rollback
+	END
+	ELSE 
+		INSERT INTO EMPLOYEE
+		VALUES (@employee_id, @f_name, @l_name, @bdate, @sex, @_address, @salary, @degree, @_start_date, @employee_type, @branch_id, @employee_manage_id)
 END
 GO
 
@@ -114,8 +156,29 @@ CREATE PROCEDURE insertEMPLOYEE_Temp
 		@employee_type nvarchar(30)
 AS
 BEGIN
-	INSERT INTO EMPLOYEE (employee_id, f_name, l_name, bdate, sex, _address, salary, degree, _start_date, employee_type)
-	VALUES (@employee_id, @f_name, @l_name, @bdate, @sex, @_address, @salary, @degree, @_start_date, @employee_type)
+	IF (YEAR(GETDATE()) - YEAR(@bdate) <= 16)
+	BEGIN
+		raiserror (N'Lỗi: Nhân viên phải trên 16 tuổi', 16,1)
+		rollback
+	END
+	ELSE IF (@sex <> N'F' and @sex <> N'M' and @sex <> N'Male' and @sex <> N'Female' and @sex <> N'Nam' and @sex <> N'Nữ')
+	BEGIN
+		raiserror (N'Lỗi: Giới tính chỉ có thể là M/Male/F/Female/Nam/Nữ', 16,1)
+		rollback
+	END
+	ELSE IF (@salary <= 5000000) 
+	BEGIN
+		raiserror (N'Lỗi: Lương của nhân viên phải trên 5000000', 16,1)
+		rollback
+	END
+	ELSE IF @salary > (SELECT e.salary FROM EMPLOYEE e WHERE @employee_manage_id = e.employee_manage_id)
+	BEGIN
+		raiserror (N'Lỗi: Lương của nhân viên phải nhỏ hơn lương của người quản lý nhân viên đó', 16,1)
+		rollback
+	END
+	ELSE 
+		INSERT INTO EMPLOYEE (employee_id, f_name, l_name, bdate, sex, _address, salary, degree, _start_date, employee_type)
+		VALUES (@employee_id, @f_name, @l_name, @bdate, @sex, @_address, @salary, @degree, @_start_date, @employee_type)
 END
 GO
 
@@ -125,10 +188,31 @@ CREATE PROCEDURE updateEMPLOYEE_Temp
 		@branch_id char(10)
 AS
 BEGIN
-	UPDATE EMPLOYEE
-	SET branch_id = @branch_id,
-		employee_manage_id = @employee_manage_id
-	WHERE employee_id = @employee_id
+	IF (YEAR(GETDATE()) - YEAR(@bdate) <= 16)
+	BEGIN
+		raiserror (N'Lỗi: Nhân viên phải trên 16 tuổi', 16,1)
+		rollback
+	END
+	ELSE IF (@sex <> N'F' and @sex <> N'M' and @sex <> N'Male' and @sex <> N'Female' and @sex <> N'Nam' and @sex <> N'Nữ')
+	BEGIN
+		raiserror (N'Lỗi: Giới tính chỉ có thể là M/Male/F/Female/Nam/Nữ', 16,1)
+		rollback
+	END
+	ELSE IF (@salary <= 5000000) 
+	BEGIN
+		raiserror (N'Lỗi: Lương của nhân viên phải trên 5000000', 16,1)
+		rollback
+	END
+	ELSE IF @salary > (SELECT e.salary FROM EMPLOYEE e WHERE @employee_manage_id = e.employee_manage_id)
+	BEGIN
+		raiserror (N'Lỗi: Lương của nhân viên phải nhỏ hơn lương của người quản lý nhân viên đó', 16,1)
+		rollback
+	END
+	ELSE 
+		UPDATE EMPLOYEE
+		SET branch_id = @branch_id,
+			employee_manage_id = @employee_manage_id
+		WHERE employee_id = @employee_id
 END
 GO
 
@@ -147,19 +231,40 @@ CREATE PROCEDURE updateEMPLOYEE
 		@employee_manage_id char(10)
 AS
 BEGIN
-	UPDATE EMPLOYEE 
-	SET f_name = @f_name, 
-		l_name = @l_name, 
-		bdate = @bdate, 
-		sex = @sex, 
-		_address = @_address, 
-		salary = @salary, 
-		degree = @degree, 
-		_start_date = @_start_date, 
-		employee_type = @employee_type, 
-		branch_id = @branch_id, 
-		employee_manage_id = @employee_manage_id
-	WHERE employee_id = @employee_id
+	IF (YEAR(GETDATE()) - YEAR(@bdate) <= 16)
+	BEGIN
+		raiserror (N'Lỗi: Nhân viên phải trên 16 tuổi', 16,1)
+		rollback
+	END
+	ELSE IF (@sex <> N'F' and @sex <> N'M' and @sex <> N'Male' and @sex <> N'Female' and @sex <> N'Nam' and @sex <> N'Nữ')
+	BEGIN
+		raiserror (N'Lỗi: Giới tính chỉ có thể là M/Male/F/Female/Nam/Nữ', 16,1)
+		rollback
+	END
+	ELSE IF (@salary <= 5000000) 
+	BEGIN
+		raiserror (N'Lỗi: Lương của nhân viên phải trên 5000000', 16,1)
+		rollback
+	END
+	ELSE IF @salary > (SELECT e.salary FROM EMPLOYEE e WHERE @employee_manage_id = e.employee_manage_id)
+	BEGIN
+		raiserror (N'Lỗi: Lương của nhân viên phải nhỏ hơn lương của người quản lý nhân viên đó', 16,1)
+		rollback
+	END
+	ELSE 
+		UPDATE EMPLOYEE 
+		SET f_name = @f_name, 
+			l_name = @l_name, 
+			bdate = @bdate, 
+			sex = @sex, 
+			_address = @_address, 
+			salary = @salary, 
+			degree = @degree, 
+			_start_date = @_start_date, 
+			employee_type = @employee_type, 
+			branch_id = @branch_id, 
+			employee_manage_id = @employee_manage_id
+		WHERE employee_id = @employee_id
 END
 GO
 
@@ -216,8 +321,65 @@ CREATE PROCEDURE insertACCOUNT_CUS
 		@customer_id char(10)
 AS
 BEGIN
-	INSERT INTO ACCOUNT(account_id, username, _password, type_account, customer_id)
-	VALUES (@account_id, @username, @_password, @type_account, @customer_id)
+	IF (LEN(@_password) < 8)
+	BEGIN
+		raiserror (N'Lỗi: Mật khẩu phải chứa ít nhất 8 kí tự', 16,1)
+		rollback
+	END
+	ELSE IF (	@_password NOT LIKE '%0%' 
+			and @_password NOT LIKE '%1%'
+			and @_password NOT LIKE '%2%'
+			and @_password NOT LIKE '%3%'
+			and @_password NOT LIKE '%4%'
+			and @_password NOT LIKE '%5%'
+			and @_password NOT LIKE '%6%'
+			and @_password NOT LIKE '%7%'
+			and @_password NOT LIKE '%8%'
+			and @_password NOT LIKE '%9%')
+	BEGIN
+		raiserror (N'Lỗi: Mật khẩu chứa ít nhất 1 chữ số', 16,1)
+		rollback
+	END
+	ELSE IF (	@_password NOT LIKE '%a%' 
+			and _password NOT LIKE '%b%'
+			and _password NOT LIKE '%c%'
+			and _password NOT LIKE '%d%'
+			and _password NOT LIKE '%e%'
+			and _password NOT LIKE '%f%'
+			and _password NOT LIKE '%g%'
+			and _password NOT LIKE '%h%'
+			and _password NOT LIKE '%i%'
+			and _password NOT LIKE '%j%'
+			and _password NOT LIKE '%k%'
+			and _password NOT LIKE '%l%'
+			and _password NOT LIKE '%m%'
+			and _password NOT LIKE '%n%'
+			and _password NOT LIKE '%o%'
+			and _password NOT LIKE '%p%'
+			and _password NOT LIKE '%q%'
+			and _password NOT LIKE '%r%'
+			and _password NOT LIKE '%s%'
+			and _password NOT LIKE '%t%'
+			and _password NOT LIKE '%u%'
+			and _password NOT LIKE '%v%'
+			and _password NOT LIKE '%w%'
+			and _password NOT LIKE '%x%'
+			and _password NOT LIKE '%y%'
+			and _password NOT LIKE '%z%')
+	BEGIN
+		raiserror (N'Lỗi: Mật khẩu chứa ít nhất 1 chữ cái', 16,1)
+		rollback
+	END
+	ELSE IF (	@_password NOT LIKE '%@%' 
+			and _password NOT LIKE '%$%' 
+			and _password NOT LIKE '%&%')
+	BEGIN
+		raiserror (N'Lỗi: Mật khẩu chứa ít nhất 1 kí tự đặc biệt: @/$/&', 16,1)
+		rollback
+	END
+	ELSE 
+		INSERT INTO ACCOUNT(account_id, username, _password, type_account, customer_id)
+		VALUES (@account_id, @username, @_password, @type_account, @customer_id)
 END
 GO
 
@@ -229,8 +391,65 @@ CREATE PROCEDURE insertACCOUNT_EMP
 		@employee_id char(10)
 AS
 BEGIN
-	INSERT INTO ACCOUNT (account_id, username, _password, type_account, employee_id)
-	VALUES (@account_id, @username, @_password, @type_account, @employee_id)
+	IF (LEN(@_password) < 8)
+	BEGIN
+		raiserror (N'Lỗi: Mật khẩu phải chứa ít nhất 8 kí tự', 16,1)
+		rollback
+	END
+	ELSE IF (	@_password NOT LIKE '%0%' 
+			and @_password NOT LIKE '%1%'
+			and @_password NOT LIKE '%2%'
+			and @_password NOT LIKE '%3%'
+			and @_password NOT LIKE '%4%'
+			and @_password NOT LIKE '%5%'
+			and @_password NOT LIKE '%6%'
+			and @_password NOT LIKE '%7%'
+			and @_password NOT LIKE '%8%'
+			and @_password NOT LIKE '%9%')
+	BEGIN
+		raiserror (N'Lỗi: Mật khẩu chứa ít nhất 1 chữ số', 16,1)
+		rollback
+	END
+	ELSE IF (	@_password NOT LIKE '%a%' 
+			and _password NOT LIKE '%b%'
+			and _password NOT LIKE '%c%'
+			and _password NOT LIKE '%d%'
+			and _password NOT LIKE '%e%'
+			and _password NOT LIKE '%f%'
+			and _password NOT LIKE '%g%'
+			and _password NOT LIKE '%h%'
+			and _password NOT LIKE '%i%'
+			and _password NOT LIKE '%j%'
+			and _password NOT LIKE '%k%'
+			and _password NOT LIKE '%l%'
+			and _password NOT LIKE '%m%'
+			and _password NOT LIKE '%n%'
+			and _password NOT LIKE '%o%'
+			and _password NOT LIKE '%p%'
+			and _password NOT LIKE '%q%'
+			and _password NOT LIKE '%r%'
+			and _password NOT LIKE '%s%'
+			and _password NOT LIKE '%t%'
+			and _password NOT LIKE '%u%'
+			and _password NOT LIKE '%v%'
+			and _password NOT LIKE '%w%'
+			and _password NOT LIKE '%x%'
+			and _password NOT LIKE '%y%'
+			and _password NOT LIKE '%z%')
+	BEGIN
+		raiserror (N'Lỗi: Mật khẩu chứa ít nhất 1 chữ cái', 16,1)
+		rollback
+	END
+	ELSE IF (	@_password NOT LIKE '%@%' 
+			and _password NOT LIKE '%$%' 
+			and _password NOT LIKE '%&%')
+	BEGIN
+		raiserror (N'Lỗi: Mật khẩu chứa ít nhất 1 kí tự đặc biệt: @/$/&', 16,1)
+		rollback
+	END
+	ELSE 
+		INSERT INTO ACCOUNT (account_id, username, _password, type_account, employee_id)
+		VALUES (@account_id, @username, @_password, @type_account, @employee_id)
 END
 GO
 
@@ -242,12 +461,69 @@ CREATE PROCEDURE updateACCOUNT_CUS
 		@customer_id char(10)
 AS
 BEGIN
-	UPDATE ACCOUNT
-	SET username = @username,
-		_password = @_password,
-		type_account = @type_account,	
-		customer_id = @customer_id
-	WHERE account_id = @account_id
+		IF (LEN(@_password) < 8)
+	BEGIN
+		raiserror (N'Lỗi: Mật khẩu phải chứa ít nhất 8 kí tự', 16,1)
+		rollback
+	END
+	ELSE IF (	@_password NOT LIKE '%0%' 
+			and @_password NOT LIKE '%1%'
+			and @_password NOT LIKE '%2%'
+			and @_password NOT LIKE '%3%'
+			and @_password NOT LIKE '%4%'
+			and @_password NOT LIKE '%5%'
+			and @_password NOT LIKE '%6%'
+			and @_password NOT LIKE '%7%'
+			and @_password NOT LIKE '%8%'
+			and @_password NOT LIKE '%9%')
+	BEGIN
+		raiserror (N'Lỗi: Mật khẩu chứa ít nhất 1 chữ số', 16,1)
+		rollback
+	END
+	ELSE IF (	@_password NOT LIKE '%a%' 
+			and _password NOT LIKE '%b%'
+			and _password NOT LIKE '%c%'
+			and _password NOT LIKE '%d%'
+			and _password NOT LIKE '%e%'
+			and _password NOT LIKE '%f%'
+			and _password NOT LIKE '%g%'
+			and _password NOT LIKE '%h%'
+			and _password NOT LIKE '%i%'
+			and _password NOT LIKE '%j%'
+			and _password NOT LIKE '%k%'
+			and _password NOT LIKE '%l%'
+			and _password NOT LIKE '%m%'
+			and _password NOT LIKE '%n%'
+			and _password NOT LIKE '%o%'
+			and _password NOT LIKE '%p%'
+			and _password NOT LIKE '%q%'
+			and _password NOT LIKE '%r%'
+			and _password NOT LIKE '%s%'
+			and _password NOT LIKE '%t%'
+			and _password NOT LIKE '%u%'
+			and _password NOT LIKE '%v%'
+			and _password NOT LIKE '%w%'
+			and _password NOT LIKE '%x%'
+			and _password NOT LIKE '%y%'
+			and _password NOT LIKE '%z%')
+	BEGIN
+		raiserror (N'Lỗi: Mật khẩu chứa ít nhất 1 chữ cái', 16,1)
+		rollback
+	END
+	ELSE IF (	@_password NOT LIKE '%@%' 
+			and _password NOT LIKE '%$%' 
+			and _password NOT LIKE '%&%')
+	BEGIN
+		raiserror (N'Lỗi: Mật khẩu chứa ít nhất 1 kí tự đặc biệt: @/$/&', 16,1)
+		rollback
+	END
+	ELSE 
+		UPDATE ACCOUNT
+		SET username = @username,
+			_password = @_password,
+			type_account = @type_account,	
+			customer_id = @customer_id
+		WHERE account_id = @account_id
 END
 GO
 
@@ -259,12 +535,69 @@ CREATE PROCEDURE updateACCOUNT_EMP
 		@employee_id char(10)
 AS
 BEGIN
-	UPDATE ACCOUNT
-	SET username = @username,
-		_password = @_password,
-		type_account = @type_account,	
-		employee_id = @employee_id
-	WHERE account_id = @account_id
+	IF (LEN(@_password) < 8)
+	BEGIN
+		raiserror (N'Lỗi: Mật khẩu phải chứa ít nhất 8 kí tự', 16,1)
+		rollback
+	END
+	ELSE IF (	@_password NOT LIKE '%0%' 
+			and @_password NOT LIKE '%1%'
+			and @_password NOT LIKE '%2%'
+			and @_password NOT LIKE '%3%'
+			and @_password NOT LIKE '%4%'
+			and @_password NOT LIKE '%5%'
+			and @_password NOT LIKE '%6%'
+			and @_password NOT LIKE '%7%'
+			and @_password NOT LIKE '%8%'
+			and @_password NOT LIKE '%9%')
+	BEGIN
+		raiserror (N'Lỗi: Mật khẩu chứa ít nhất 1 chữ số', 16,1)
+		rollback
+	END
+	ELSE IF (	@_password NOT LIKE '%a%' 
+			and _password NOT LIKE '%b%'
+			and _password NOT LIKE '%c%'
+			and _password NOT LIKE '%d%'
+			and _password NOT LIKE '%e%'
+			and _password NOT LIKE '%f%'
+			and _password NOT LIKE '%g%'
+			and _password NOT LIKE '%h%'
+			and _password NOT LIKE '%i%'
+			and _password NOT LIKE '%j%'
+			and _password NOT LIKE '%k%'
+			and _password NOT LIKE '%l%'
+			and _password NOT LIKE '%m%'
+			and _password NOT LIKE '%n%'
+			and _password NOT LIKE '%o%'
+			and _password NOT LIKE '%p%'
+			and _password NOT LIKE '%q%'
+			and _password NOT LIKE '%r%'
+			and _password NOT LIKE '%s%'
+			and _password NOT LIKE '%t%'
+			and _password NOT LIKE '%u%'
+			and _password NOT LIKE '%v%'
+			and _password NOT LIKE '%w%'
+			and _password NOT LIKE '%x%'
+			and _password NOT LIKE '%y%'
+			and _password NOT LIKE '%z%')
+	BEGIN
+		raiserror (N'Lỗi: Mật khẩu chứa ít nhất 1 chữ cái', 16,1)
+		rollback
+	END
+	ELSE IF (	@_password NOT LIKE '%@%' 
+			and _password NOT LIKE '%$%' 
+			and _password NOT LIKE '%&%')
+	BEGIN
+		raiserror (N'Lỗi: Mật khẩu chứa ít nhất 1 kí tự đặc biệt: @/$/&', 16,1)
+		rollback
+	END
+	ELSE 
+		UPDATE ACCOUNT
+		SET username = @username,
+			_password = @_password,
+			type_account = @type_account,	
+			employee_id = @employee_id
+		WHERE account_id = @account_id
 END
 GO
 
@@ -304,8 +637,14 @@ CREATE PROCEDURE insertCUSTOMER_EMAIL
 		@email nvarchar(20)
 AS
 BEGIN
-	INSERT INTO CUSTOMER_EMAIL 
-	VALUES (@customer_id, @email)
+	IF (@email NOT LIKE '%@gmail.com')
+	BEGIN
+		raiserror (N'Lỗi: Format email phải chứa đuôi @gmail.com', 16,1)
+		rollback
+	END
+	ELSE 
+		INSERT INTO CUSTOMER_EMAIL 
+		VALUES (@customer_id, @email)
 END
 GO
 
@@ -428,8 +767,14 @@ CREATE PROCEDURE insertEMPLOYEE_EMAIL
 		@email nvarchar(20)
 AS
 BEGIN
-	INSERT INTO EMPLOYEE_EMAIL 
-	VALUES (@employee_id, @email)
+	IF (@email NOT LIKE '%@gmail.com')
+	BEGIN
+		raiserror (N'Lỗi: Format email phải chứa đuôi @gmail.com', 16,1)
+		rollback
+	END
+	ELSE 
+		INSERT INTO EMPLOYEE_EMAIL 
+		VALUES (@employee_id, @email)
 END
 GO
 
@@ -608,8 +953,24 @@ CREATE PROCEDURE insertPROMOTION
 		@branch_id char(10)
 AS
 BEGIN
-	INSERT INTO PROMOTION 
-	VALUES (@promotion_id, @promotion_name, @promotion_type, @_start_date, @end_date, @min_money, @max_money, @promotion_percent, @amount, @condition, @gift_product, @branch_id)
+	IF (DATEDIFF(DD,@_start_date,@end_date) <= 0)
+	BEGIN
+		raiserror (N'Lỗi: Ngày kết thúc khuyến mãi phải sau ngày bắt đầu KM', 16,1)
+		rollback
+	END
+	ELSE IF (@amount > 30)
+	BEGIN
+		raiserror (N'Lỗi: Số lượng mỗi mã Khuyến mãi tối đa là 30', 16,1)
+		rollback
+	END
+	ELSE IF (@promotion_percent <= 0 or @promotion_percent > 80) 
+	BEGIN
+		raiserror (N'Lỗi: Phần trăm Khuyến mãi: 0% < phần trăm <= 80%', 16,1)
+		rollback
+	END
+	ELSE 
+		INSERT INTO PROMOTION 
+		VALUES (@promotion_id, @promotion_name, @promotion_type, @_start_date, @end_date, @min_money, @max_money, @promotion_percent, @amount, @condition, @gift_product, @branch_id)
 END
 GO
 
@@ -628,19 +989,35 @@ CREATE PROCEDURE updatePROMOTION
 		@branch_id char(10)
 AS
 BEGIN
-	UPDATE PROMOTION
-	SET promotion_name = @promotion_name, 
-		promotion_type = @promotion_type, 
-		_start_date = @_start_date, 
-		end_date = @end_date, 
-		min_money = @min_money, 
-		max_money = @max_money, 
-		promotion_percent = @promotion_percent, 
-		amount = @amount, 
-		condition = @condition, 
-		gift_product = @gift_product, 
-		branch_id = @branch_id
-	WHERE promotion_id = @promotion_id
+	IF (DATEDIFF(DD,@_start_date,@end_date) <= 0)
+	BEGIN
+		raiserror (N'Lỗi: Ngày kết thúc khuyến mãi phải sau ngày bắt đầu KM', 16,1)
+		rollback
+	END
+	ELSE IF (@amount > 30)
+	BEGIN
+		raiserror (N'Lỗi: Số lượng mỗi mã Khuyến mãi tối đa là 30', 16,1)
+		rollback
+	END
+	ELSE IF (@promotion_percent <= 0 or @promotion_percent > 80) 
+	BEGIN
+		raiserror (N'Lỗi: Phần trăm Khuyến mãi: 0% < phần trăm <= 80%', 16,1)
+		rollback
+	END
+	ELSE 
+		UPDATE PROMOTION
+		SET promotion_name = @promotion_name, 
+			promotion_type = @promotion_type, 
+			_start_date = @_start_date, 
+			end_date = @end_date, 
+			min_money = @min_money, 
+			max_money = @max_money, 
+			promotion_percent = @promotion_percent, 
+			amount = @amount, 
+			condition = @condition, 
+			gift_product = @gift_product, 
+			branch_id = @branch_id
+		WHERE promotion_id = @promotion_id
 END
 GO
 
@@ -751,8 +1128,19 @@ CREATE PROCEDURE insertORDER_ONLINE
 		@shipping_id char(10)
 AS
 BEGIN
-	INSERT INTO ORDER_ONLINE
-	VALUES(@order_id, @branch_id, @delivery_address, @cost, @delivery_date, @delivery_hour, @vehicle, @driver, @receiver, @receiver_phone, @shipping_id)
+	IF (@cost > (SELECT o.total_money FROM _ORDER o WHERE o.order_id = @order_id))
+	BEGIN
+		raiserror (N'Lỗi: Chi phí vận chuyển phải nhỏ hơn tổng tiền đơn hàng', 16,1)
+		rollback
+	END
+	ELSE IF (DATEDIFF(DD,(SELECT o.order_date FROM _ORDER o WHERE o.order_id = @order_id),@delivery_date) > 12)
+	BEGIN
+		raiserror (N'Lỗi: Thời gian giao hàng tối đa là 12 ngày', 16,1)
+		rollback
+	END
+	ELSE
+		INSERT INTO ORDER_ONLINE
+		VALUES(@order_id, @branch_id, @delivery_address, @cost, @delivery_date, @delivery_hour, @vehicle, @driver, @receiver, @receiver_phone, @shipping_id)
 END
 GO
 
@@ -861,8 +1249,14 @@ CREATE PROCEDURE insertPRODUCT
 		@supplier_id char(10)
 AS
 BEGIN
-	INSERT INTO PRODUCT (product_id, product_name, manufacturer, illustration, entry_price, sell_price, category_id, supplier_id)
-	VALUES (@product_id, @product_name, @manufacturer, @illustration, @entry_price, @sell_price, @category_id, @supplier_id)
+	IF (@sell_price < @entry_price)
+	BEGIN
+		raiserror (N'Lỗi: Giá nhập không thể lớn hơn giá bán', 16,1)
+		rollback
+	END
+	ELSE
+		INSERT INTO PRODUCT (product_id, product_name, manufacturer, illustration, entry_price, sell_price, category_id, supplier_id)
+		VALUES (@product_id, @product_name, @manufacturer, @illustration, @entry_price, @sell_price, @category_id, @supplier_id)
 END
 GO
 
@@ -877,15 +1271,21 @@ CREATE PROCEDURE updatePRODUCT
 		@supplier_id char(10)
 AS
 BEGIN
-	UPDATE PRODUCT
-	SET product_name = @product_name,
-		manufacturer = @manufacturer, 
-		illustration = @illustration, 
-		entry_price = @entry_price, 
-		sell_price = @sell_price, 
-		category_id = @category_id, 
-		supplier_id = @supplier_id
-	WHERE product_id = @product_id
+	IF (@sell_price < @entry_price)
+	BEGIN
+		raiserror (N'Lỗi: Giá nhập không thể lớn hơn giá bán', 16,1)
+		rollback
+	END
+	ELSE
+		UPDATE PRODUCT
+		SET product_name = @product_name,
+			manufacturer = @manufacturer, 
+			illustration = @illustration, 
+			entry_price = @entry_price, 
+			sell_price = @sell_price, 
+			category_id = @category_id, 
+			supplier_id = @supplier_id
+		WHERE product_id = @product_id
 END
 GO
 
@@ -967,8 +1367,14 @@ CREATE PROCEDURE insertSHOE
 		@shoe_type nvarchar(20)
 AS
 BEGIN
-	INSERT INTO SHOE
-	VALUES (@shoe_id, @product_id, @shoe_elastic, @color, @size, @shoe_type)
+	IF (@size < 34 or @size > 43)
+	BEGIN
+		raiserror (N'Lỗi: Size giày từ 34 đến 43', 16,1)
+		rollback
+	END
+	ELSE 
+		INSERT INTO SHOE
+		VALUES (@shoe_id, @product_id, @shoe_elastic, @color, @size, @shoe_type)
 END
 GO
 
