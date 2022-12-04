@@ -3,7 +3,7 @@ GO
 
 --************************** TẠO PROCEDURE **********************************
 -- Bảng CUSTOMER (insert, update, delete)
-ALTER PROCEDURE insertCUSTOMER 
+CREATE PROCEDURE insertCUSTOMER 
 		@customer_id char(10), 
 		@register_date DATE,					 
 		@f_name nvarchar(10),
@@ -171,11 +171,6 @@ BEGIN
 		raiserror (N'Lỗi: Lương của nhân viên phải trên 5000000', 16,1)
 		rollback
 	END
-	ELSE IF @salary > (SELECT e.salary FROM EMPLOYEE e WHERE @employee_manage_id = e.employee_manage_id)
-	BEGIN
-		raiserror (N'Lỗi: Lương của nhân viên phải nhỏ hơn lương của người quản lý nhân viên đó', 16,1)
-		rollback
-	END
 	ELSE 
 		INSERT INTO EMPLOYEE (employee_id, f_name, l_name, bdate, sex, _address, salary, degree, _start_date, employee_type)
 		VALUES (@employee_id, @f_name, @l_name, @bdate, @sex, @_address, @salary, @degree, @_start_date, @employee_type)
@@ -188,27 +183,6 @@ CREATE PROCEDURE updateEMPLOYEE_Temp
 		@branch_id char(10)
 AS
 BEGIN
-	IF (YEAR(GETDATE()) - YEAR(@bdate) <= 16)
-	BEGIN
-		raiserror (N'Lỗi: Nhân viên phải trên 16 tuổi', 16,1)
-		rollback
-	END
-	ELSE IF (@sex <> N'F' and @sex <> N'M' and @sex <> N'Male' and @sex <> N'Female' and @sex <> N'Nam' and @sex <> N'Nữ')
-	BEGIN
-		raiserror (N'Lỗi: Giới tính chỉ có thể là M/Male/F/Female/Nam/Nữ', 16,1)
-		rollback
-	END
-	ELSE IF (@salary <= 5000000) 
-	BEGIN
-		raiserror (N'Lỗi: Lương của nhân viên phải trên 5000000', 16,1)
-		rollback
-	END
-	ELSE IF @salary > (SELECT e.salary FROM EMPLOYEE e WHERE @employee_manage_id = e.employee_manage_id)
-	BEGIN
-		raiserror (N'Lỗi: Lương của nhân viên phải nhỏ hơn lương của người quản lý nhân viên đó', 16,1)
-		rollback
-	END
-	ELSE 
 		UPDATE EMPLOYEE
 		SET branch_id = @branch_id,
 			employee_manage_id = @employee_manage_id
@@ -341,38 +315,38 @@ BEGIN
 		rollback
 	END
 	ELSE IF (	@_password NOT LIKE '%a%' 
-			and _password NOT LIKE '%b%'
-			and _password NOT LIKE '%c%'
-			and _password NOT LIKE '%d%'
-			and _password NOT LIKE '%e%'
-			and _password NOT LIKE '%f%'
-			and _password NOT LIKE '%g%'
-			and _password NOT LIKE '%h%'
-			and _password NOT LIKE '%i%'
-			and _password NOT LIKE '%j%'
-			and _password NOT LIKE '%k%'
-			and _password NOT LIKE '%l%'
-			and _password NOT LIKE '%m%'
-			and _password NOT LIKE '%n%'
-			and _password NOT LIKE '%o%'
-			and _password NOT LIKE '%p%'
-			and _password NOT LIKE '%q%'
-			and _password NOT LIKE '%r%'
-			and _password NOT LIKE '%s%'
-			and _password NOT LIKE '%t%'
-			and _password NOT LIKE '%u%'
-			and _password NOT LIKE '%v%'
-			and _password NOT LIKE '%w%'
-			and _password NOT LIKE '%x%'
-			and _password NOT LIKE '%y%'
-			and _password NOT LIKE '%z%')
+			and @_password NOT LIKE '%b%'
+			and @_password NOT LIKE '%c%'
+			and @_password NOT LIKE '%d%'
+			and @_password NOT LIKE '%e%'
+			and @_password NOT LIKE '%f%'
+			and @_password NOT LIKE '%g%'
+			and @_password NOT LIKE '%h%'
+			and @_password NOT LIKE '%i%'
+			and @_password NOT LIKE '%j%'
+			and @_password NOT LIKE '%k%'
+			and @_password NOT LIKE '%l%'
+			and @_password NOT LIKE '%m%'
+			and @_password NOT LIKE '%n%'
+			and @_password NOT LIKE '%o%'
+			and @_password NOT LIKE '%p%'
+			and @_password NOT LIKE '%q%'
+			and @_password NOT LIKE '%r%'
+			and @_password NOT LIKE '%s%'
+			and @_password NOT LIKE '%t%'
+			and @_password NOT LIKE '%u%'
+			and @_password NOT LIKE '%v%'
+			and @_password NOT LIKE '%w%'
+			and @_password NOT LIKE '%x%'
+			and @_password NOT LIKE '%y%'
+			and @_password NOT LIKE '%z%')
 	BEGIN
 		raiserror (N'Lỗi: Mật khẩu chứa ít nhất 1 chữ cái', 16,1)
 		rollback
 	END
 	ELSE IF (	@_password NOT LIKE '%@%' 
-			and _password NOT LIKE '%$%' 
-			and _password NOT LIKE '%&%')
+			and @_password NOT LIKE '%$%' 
+			and @_password NOT LIKE '%&%')
 	BEGIN
 		raiserror (N'Lỗi: Mật khẩu chứa ít nhất 1 kí tự đặc biệt: @/$/&', 16,1)
 		rollback
@@ -411,43 +385,43 @@ BEGIN
 		rollback
 	END
 	ELSE IF (	@_password NOT LIKE '%a%' 
-			and _password NOT LIKE '%b%'
-			and _password NOT LIKE '%c%'
-			and _password NOT LIKE '%d%'
-			and _password NOT LIKE '%e%'
-			and _password NOT LIKE '%f%'
-			and _password NOT LIKE '%g%'
-			and _password NOT LIKE '%h%'
-			and _password NOT LIKE '%i%'
-			and _password NOT LIKE '%j%'
-			and _password NOT LIKE '%k%'
-			and _password NOT LIKE '%l%'
-			and _password NOT LIKE '%m%'
-			and _password NOT LIKE '%n%'
-			and _password NOT LIKE '%o%'
-			and _password NOT LIKE '%p%'
-			and _password NOT LIKE '%q%'
-			and _password NOT LIKE '%r%'
-			and _password NOT LIKE '%s%'
-			and _password NOT LIKE '%t%'
-			and _password NOT LIKE '%u%'
-			and _password NOT LIKE '%v%'
-			and _password NOT LIKE '%w%'
-			and _password NOT LIKE '%x%'
-			and _password NOT LIKE '%y%'
-			and _password NOT LIKE '%z%')
+			and @_password NOT LIKE '%b%'
+			and @_password NOT LIKE '%c%'
+			and @_password NOT LIKE '%d%'
+			and @_password NOT LIKE '%e%'
+			and @_password NOT LIKE '%f%'
+			and @_password NOT LIKE '%g%'
+			and @_password NOT LIKE '%h%'
+			and @_password NOT LIKE '%i%'
+			and @_password NOT LIKE '%j%'
+			and @_password NOT LIKE '%k%'
+			and @_password NOT LIKE '%l%'
+			and @_password NOT LIKE '%m%'
+			and @_password NOT LIKE '%n%'
+			and @_password NOT LIKE '%o%'
+			and @_password NOT LIKE '%p%'
+			and @_password NOT LIKE '%q%'
+			and @_password NOT LIKE '%r%'
+			and @_password NOT LIKE '%s%'
+			and @_password NOT LIKE '%t%'
+			and @_password NOT LIKE '%u%'
+			and @_password NOT LIKE '%v%'
+			and @_password NOT LIKE '%w%'
+			and @_password NOT LIKE '%x%'
+			and @_password NOT LIKE '%y%'
+			and @_password NOT LIKE '%z%')
 	BEGIN
 		raiserror (N'Lỗi: Mật khẩu chứa ít nhất 1 chữ cái', 16,1)
 		rollback
 	END
 	ELSE IF (	@_password NOT LIKE '%@%' 
-			and _password NOT LIKE '%$%' 
-			and _password NOT LIKE '%&%')
+			and @_password NOT LIKE '%$%' 
+			and @_password NOT LIKE '%&%')
 	BEGIN
 		raiserror (N'Lỗi: Mật khẩu chứa ít nhất 1 kí tự đặc biệt: @/$/&', 16,1)
 		rollback
 	END
-	ELSE 
+	ELSE  
 		INSERT INTO ACCOUNT (account_id, username, _password, type_account, employee_id)
 		VALUES (@account_id, @username, @_password, @type_account, @employee_id)
 END
@@ -461,7 +435,7 @@ CREATE PROCEDURE updateACCOUNT_CUS
 		@customer_id char(10)
 AS
 BEGIN
-		IF (LEN(@_password) < 8)
+	IF (LEN(@_password) < 8)
 	BEGIN
 		raiserror (N'Lỗi: Mật khẩu phải chứa ít nhất 8 kí tự', 16,1)
 		rollback
@@ -481,43 +455,43 @@ BEGIN
 		rollback
 	END
 	ELSE IF (	@_password NOT LIKE '%a%' 
-			and _password NOT LIKE '%b%'
-			and _password NOT LIKE '%c%'
-			and _password NOT LIKE '%d%'
-			and _password NOT LIKE '%e%'
-			and _password NOT LIKE '%f%'
-			and _password NOT LIKE '%g%'
-			and _password NOT LIKE '%h%'
-			and _password NOT LIKE '%i%'
-			and _password NOT LIKE '%j%'
-			and _password NOT LIKE '%k%'
-			and _password NOT LIKE '%l%'
-			and _password NOT LIKE '%m%'
-			and _password NOT LIKE '%n%'
-			and _password NOT LIKE '%o%'
-			and _password NOT LIKE '%p%'
-			and _password NOT LIKE '%q%'
-			and _password NOT LIKE '%r%'
-			and _password NOT LIKE '%s%'
-			and _password NOT LIKE '%t%'
-			and _password NOT LIKE '%u%'
-			and _password NOT LIKE '%v%'
-			and _password NOT LIKE '%w%'
-			and _password NOT LIKE '%x%'
-			and _password NOT LIKE '%y%'
-			and _password NOT LIKE '%z%')
+			and @_password NOT LIKE '%b%'
+			and @_password NOT LIKE '%c%'
+			and @_password NOT LIKE '%d%'
+			and @_password NOT LIKE '%e%'
+			and @_password NOT LIKE '%f%'
+			and @_password NOT LIKE '%g%'
+			and @_password NOT LIKE '%h%'
+			and @_password NOT LIKE '%i%'
+			and @_password NOT LIKE '%j%'
+			and @_password NOT LIKE '%k%'
+			and @_password NOT LIKE '%l%'
+			and @_password NOT LIKE '%m%'
+			and @_password NOT LIKE '%n%'
+			and @_password NOT LIKE '%o%'
+			and @_password NOT LIKE '%p%'
+			and @_password NOT LIKE '%q%'
+			and @_password NOT LIKE '%r%'
+			and @_password NOT LIKE '%s%'
+			and @_password NOT LIKE '%t%'
+			and @_password NOT LIKE '%u%'
+			and @_password NOT LIKE '%v%'
+			and @_password NOT LIKE '%w%'
+			and @_password NOT LIKE '%x%'
+			and @_password NOT LIKE '%y%'
+			and @_password NOT LIKE '%z%')
 	BEGIN
 		raiserror (N'Lỗi: Mật khẩu chứa ít nhất 1 chữ cái', 16,1)
 		rollback
 	END
 	ELSE IF (	@_password NOT LIKE '%@%' 
-			and _password NOT LIKE '%$%' 
-			and _password NOT LIKE '%&%')
+			and @_password NOT LIKE '%$%' 
+			and @_password NOT LIKE '%&%')
 	BEGIN
 		raiserror (N'Lỗi: Mật khẩu chứa ít nhất 1 kí tự đặc biệt: @/$/&', 16,1)
 		rollback
 	END
-	ELSE 
+	ELSE  
 		UPDATE ACCOUNT
 		SET username = @username,
 			_password = @_password,
@@ -555,38 +529,38 @@ BEGIN
 		rollback
 	END
 	ELSE IF (	@_password NOT LIKE '%a%' 
-			and _password NOT LIKE '%b%'
-			and _password NOT LIKE '%c%'
-			and _password NOT LIKE '%d%'
-			and _password NOT LIKE '%e%'
-			and _password NOT LIKE '%f%'
-			and _password NOT LIKE '%g%'
-			and _password NOT LIKE '%h%'
-			and _password NOT LIKE '%i%'
-			and _password NOT LIKE '%j%'
-			and _password NOT LIKE '%k%'
-			and _password NOT LIKE '%l%'
-			and _password NOT LIKE '%m%'
-			and _password NOT LIKE '%n%'
-			and _password NOT LIKE '%o%'
-			and _password NOT LIKE '%p%'
-			and _password NOT LIKE '%q%'
-			and _password NOT LIKE '%r%'
-			and _password NOT LIKE '%s%'
-			and _password NOT LIKE '%t%'
-			and _password NOT LIKE '%u%'
-			and _password NOT LIKE '%v%'
-			and _password NOT LIKE '%w%'
-			and _password NOT LIKE '%x%'
-			and _password NOT LIKE '%y%'
-			and _password NOT LIKE '%z%')
+			and @_password NOT LIKE '%b%'
+			and @_password NOT LIKE '%c%'
+			and @_password NOT LIKE '%d%'
+			and @_password NOT LIKE '%e%'
+			and @_password NOT LIKE '%f%'
+			and @_password NOT LIKE '%g%'
+			and @_password NOT LIKE '%h%'
+			and @_password NOT LIKE '%i%'
+			and @_password NOT LIKE '%j%'
+			and @_password NOT LIKE '%k%'
+			and @_password NOT LIKE '%l%'
+			and @_password NOT LIKE '%m%'
+			and @_password NOT LIKE '%n%'
+			and @_password NOT LIKE '%o%'
+			and @_password NOT LIKE '%p%'
+			and @_password NOT LIKE '%q%'
+			and @_password NOT LIKE '%r%'
+			and @_password NOT LIKE '%s%'
+			and @_password NOT LIKE '%t%'
+			and @_password NOT LIKE '%u%'
+			and @_password NOT LIKE '%v%'
+			and @_password NOT LIKE '%w%'
+			and @_password NOT LIKE '%x%'
+			and @_password NOT LIKE '%y%'
+			and @_password NOT LIKE '%z%')
 	BEGIN
 		raiserror (N'Lỗi: Mật khẩu chứa ít nhất 1 chữ cái', 16,1)
 		rollback
 	END
 	ELSE IF (	@_password NOT LIKE '%@%' 
-			and _password NOT LIKE '%$%' 
-			and _password NOT LIKE '%&%')
+			and @_password NOT LIKE '%$%' 
+			and @_password NOT LIKE '%&%')
 	BEGIN
 		raiserror (N'Lỗi: Mật khẩu chứa ít nhất 1 kí tự đặc biệt: @/$/&', 16,1)
 		rollback
