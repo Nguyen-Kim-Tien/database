@@ -335,7 +335,7 @@ EXEC insertPRODUCT
     N'Hãng sản xuất 1',
     N'https://media.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85,format=auto/uploads/August2022/DSC05323-copy_51.jpg',
     40000.000,
-  	60000.000,
+  	70000.000,
     'CAT0004','SUP0001'
 
 EXEC insertPRODUCT
@@ -344,7 +344,7 @@ EXEC insertPRODUCT
     N'Hãng sản xuất 1',
     N'https://media.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85,format=auto/uploads/August2022/DSC05295-copy_73.jpg',
     40000.000,
-  	60000.000,
+  	65000.000,
     'CAT0004','SUP0001'
      
 EXEC insertPRODUCT
@@ -353,7 +353,7 @@ EXEC insertPRODUCT
     N'Hãng sản xuất 1',
     N'https://media.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85,format=auto/uploads/August2022/DSC04936-copy-1.jpg',
     40000.000,
-  	60000.000,
+  	75000.000,
     'CAT0004','SUP0001'
      
 EXEC insertPRODUCT
@@ -362,7 +362,7 @@ EXEC insertPRODUCT
     N'Hãng sản xuất 1',
     N'https://media.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85,format=auto/uploads/August2022/USA_den_soc_xanh_bien_2.jpg',
     40000.000,
-  	60000.000,
+  	50000.000,
     'CAT0004','SUP0001'
      
 EXEC insertPRODUCT
@@ -371,7 +371,7 @@ EXEC insertPRODUCT
     N'Hãng sản xuất 1',
     N'https://media.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85,format=auto/uploads/August2022/DSC04847-copy-1.jpg',
     40000.000,
-  	60000.000,
+  	80000.000,
     'CAT0004','SUP0001'
      
 EXEC insertPRODUCT
@@ -380,7 +380,7 @@ EXEC insertPRODUCT
     N'Hãng sản xuất 1',
     N'https://media.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85,format=auto/uploads/August2022/DSC05191-copy_89.jpg',
     40000.000,
-  	60000.000,
+  	90000.000,
     'CAT0004','SUP0001'
      
 EXEC insertPRODUCT
@@ -388,7 +388,7 @@ EXEC insertPRODUCT
     N'Áo Polo nam Pique Cotton USA thấm hút tối đa (kẻ sọc) - Xanh đậm sọc xanh          ',
     N'Hãng sản xuất 1',
     N'https://media.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85,format=auto/uploads/August2022/DSC05242-copy.jpg',
-    40000.000,
+    30000.000,
   	60000.000,
     'CAT0004','SUP0001'
      
@@ -397,8 +397,8 @@ EXEC insertPRODUCT
     N'Áo Polo nam Pique Cotton USA thấm hút tối đa (trơn) - Xanh rêu          ',
     N'Hãng sản xuất 1',
     N'https://media.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85,format=auto/uploads/September2022/USA_REU_1.jpg',
-    40000.000,
-    60000.000,
+    45000.000,
+    75000.000,
     'CAT0004','SUP0001'
      
 EXEC insertPRODUCT
@@ -406,8 +406,8 @@ EXEC insertPRODUCT
     N'Áo Polo nam Pique Cotton USA thấm hút tối đa (trơn) - Xanh Navy          ',
     N'Hãng sản xuất 1',
     N'https://media.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85,format=auto/uploads/September2022/polousanavyy_2.jpg',
-    40000.000,
-  	60000.000,
+    50000.000,
+  	90000.000,
     'CAT0004','SUP0001'
      
 EXEC insertPRODUCT
@@ -415,8 +415,8 @@ EXEC insertPRODUCT
     N'Áo Polo nam Pique Cotton USA thấm hút tối đa (trơn) - Đen          ',
     N'Hãng sản xuất 1',
     N'https://media.coolmate.me/cdn-cgi/image/width=672,height=990,quality=85,format=auto/uploads/August2022/DSC04797-copy-1.jpg',
-    40000.000,
-  	60000.000,
+    60000.000,
+  	80000.000,
     'CAT0004','SUP0001'
      
 EXEC insertPRODUCT
@@ -1843,8 +1843,7 @@ EXEC insertPRODUCT_OF_ORDER 'ORD0001', 'PRD0001',  1
 GO
 EXEC insertPRODUCT_OF_ORDER 'ORD0001', 'PRD0002',  1
 GO
-EXEC insertPRODUCT_OF_ORDER 'ORD0001', 'PRD0003',  2
---EXEC insertPRODUCT_OF_ORDER 'ORD0001', 'PRD0008',  2 
+EXEC insertPRODUCT_OF_ORDER 'ORD0001', 'PRD0003',  2 
 GO
 EXEC insertPRODUCT_OF_ORDER 'ORD0001', 'PRD0005',  3
 GO
@@ -1859,29 +1858,22 @@ GO
 EXEC insertPRODUCT_OF_ORDER 'ORD0003', 'PRD0003',  3
 GO
 EXEC insertPRODUCT_OF_ORDER 'ORD0003', 'PRD0004',  1
---EXEC insertPRODUCT_OF_ORDER 'ORD0003', 'PRD0005',  1 --
 GO
 EXEC insertPRODUCT_OF_ORDER 'ORD0004', 'PRD0006',  1
 GO
 EXEC insertPRODUCT_OF_ORDER 'ORD0004', 'PRD0007',  3
---EXEC insertPRODUCT_OF_ORDER 'ORD0004', 'PRD0008',  2 --
 GO
 EXEC insertPRODUCT_OF_ORDER 'ORD0005', 'PRD0001',  2
---EXEC insertPRODUCT_OF_ORDER 'ORD0005', 'PRD0002',  4 --
 GO
 EXEC insertPRODUCT_OF_ORDER 'ORD0005', 'PRD0003',  2
---EXEC insertPRODUCT_OF_ORDER 'ORD0005', 'PRD0005',  2 --
---EXEC insertPRODUCT_OF_ORDER 'ORD0005', 'PRD0009',  1 --
 GO
 EXEC insertPRODUCT_OF_ORDER 'ORD0006', 'PRD0009',  1
 GO
 EXEC insertPRODUCT_OF_ORDER 'ORD0006', 'PRD0010',  1
 GO
 EXEC insertPRODUCT_OF_ORDER 'ORD0006', 'PRD0001',  2
---EXEC insertPRODUCT_OF_ORDER 'ORD0006', 'PRD0120',  2 --
 GO
 EXEC insertPRODUCT_OF_ORDER 'ORD0007', 'PRD0007',  1
---EXEC insertPRODUCT_OF_ORDER 'ORD0007', 'PRD0020',  5 --
 GO
 EXEC insertPRODUCT_OF_ORDER 'ORD0007', 'PRD0008',  2
 GO
@@ -1890,8 +1882,7 @@ GO
 EXEC insertPRODUCT_OF_ORDER 'ORD0008', 'PRD0001',  2
 GO
 EXEC insertPRODUCT_OF_ORDER 'ORD0008', 'PRD0120',  2
---EXEC insertPRODUCT_OF_ORDER 'ORD0008', 'PRD0111',  2 --
---EXEC insertPRODUCT_OF_ORDER 'ORD0008', 'PRD0120',  2 --
+
 GO
 EXEC insertPRODUCT_OF_ORDER 'ORD0008', 'PRD0121',  3
 GO
@@ -1910,7 +1901,6 @@ GO
 EXEC insertPRODUCT_OF_ORDER 'ORD0009', 'PRD0124',  3
 GO
 EXEC insertPRODUCT_OF_ORDER 'ORD0010', 'PRD0001',  3
---EXEC insertPRODUCT_OF_ORDER 'ORD0010', 'PRD0005',  4 --
 GO
 EXEC insertPRODUCT_OF_ORDER 'ORD0010', 'PRD0120',  3
 GO
@@ -1925,7 +1915,6 @@ GO
 EXEC insertPRODUCT_OF_ORDER 'ORD0012', 'PRD0009',  2
 GO
 EXEC insertPRODUCT_OF_ORDER 'ORD0012', 'PRD0010',  2
---EXEC insertPRODUCT_OF_ORDER 'ORD0012', 'PRD0120',  1 --
 GO
 EXEC insertPRODUCT_OF_ORDER 'ORD0013', 'PRD0003',  2
 GO
@@ -1965,4 +1954,5 @@ EXEC insertPAYMENT 'PAY0014',  N'Ghi chú 14',  N'Trạng thái 14', N'Phương 
 GO
 EXEC insertPAYMENT 'PAY0015',  N'Ghi chú 15',  N'Trạng thái 15', N'Phương thức 15', '20221010',  '12:12', 'ORD0015', 'CUS0015', 'PRO0006'
 GO
+
 

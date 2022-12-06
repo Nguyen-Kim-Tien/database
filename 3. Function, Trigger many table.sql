@@ -174,7 +174,7 @@ GO
 
 CREATE TRIGGER triProductOFOrder
 ON PRODUCT_OF_ORDER
-FOR INSERT, UPDATE
+FOR INSERT
 AS
 BEGIN
 	UPDATE PRODUCT_OF_ORDER
@@ -192,6 +192,28 @@ BEGIN
 	UPDATE PRODUCT 
 	SET PRODUCT.amount = PRODUCT.amount - INSERTED.amount FROM INSERTED WHERE INSERTED.product_id = PRODUCT.product_id
 	
+END
+GO
+
+CREATE TRIGGER triProductOFOrder2
+ON PRODUCT_OF_ORDER
+FOR UPDATE
+AS
+BEGIN
+	UPDATE PRODUCT_OF_ORDER
+	SET PRODUCT_OF_ORDER.sell_price = PRODUCT.sell_price FROM PRODUCT WHERE PRODUCT_OF_ORDER.product_id = PRODUCT.product_id
+	
+	UPDATE _ORDER
+	SET _ORDER.total_money = temp.Totall FROM temp WHERE _ORDER.order_id = temp.order_id
+
+	UPDATE _ORDER 
+	SET _ORDER.amount = (SELECT SUM(PRODUCT_OF_ORDER.amount) FROM PRODUCT_OF_ORDER WHERE PRODUCT_OF_ORDER.order_id = _ORDER.order_id)
+
+	UPDATE PAYMENT
+	SET PAYMENT.total_money = _ORDER.total_money - dbo.TinhKM(PAYMENT.order_id, PROMOTION.promotion_id) FROM _ORDER, PROMOTION WHERE PAYMENT.order_id = _ORDER.order_id and PAYMENT.promotion_id = PROMOTION.promotion_id
+
+	UPDATE PRODUCT 
+	SET PRODUCT.amount = PRODUCT.amount - (INSERTED.amount - PRODUCT_OF_ORDER.amount) FROM INSERTED, PRODUCT_OF_ORDER WHERE INSERTED.product_id = PRODUCT.product_id and PRODUCT.product_id = PRODUCT_OF_ORDER.product_id
 END
 GO
 
@@ -243,3 +265,46 @@ BEGIN
 	SET CUSTOMER._level = dbo.getLevel(CUSTOMER.accumulate_point)
 END
 GO
+
+
+CREATE TRIGGER tri_deleteProductOfOrder
+ON PRODUCT_OF_ORDER
+FOR DELETE
+AS
+BEGIN
+	UPDATE PRODUCT
+	SET PRODUCT.amount = PRODUCT.amount + DELETED.amount FROM DELETED 
+	WHERE PRODUCT.product_id = DELETED.product_id
+
+	UPDATE _ORDER
+	SET _ORDER.total_money = temp.Totall FROM temp WHERE _ORDER.order_id = temp.order_id
+
+	UPDATE _ORDER 
+	SET _ORDER.amount = (SELECT SUM(PRODUCT_OF_ORDER.amount) FROM PRODUCT_OF_ORDER WHERE PRODUCT_OF_ORDER.order_id = _ORDER.order_id)
+
+	UPDATE PAYMENT
+	SET PAYMENT.total_money = _ORDER.total_money - dbo.TinhKM(PAYMENT.order_id, PROMOTION.promotion_id) FROM _ORDER, PROMOTION WHERE PAYMENT.order_id = _ORDER.order_id and PAYMENT.promotion_id = PROMOTION.promotion_id
+END
+GO
+
+CREATE TRIGGER tri_deleteCartProduct
+ON CART_PRODUCT
+FOR DELETE
+AS
+BEGIN
+	UPDATE CART 
+	SET CART.total_money = temp2.Totall FROM temp2 WHERE CART.cart_id = temp2.cart_id
+END
+GO
+
+
+CREATE TRIGGER tri_deleteProduct
+ON PRODUCT
+FOR DELETE
+AS
+BEGIN
+	DELETE FROM PRODUCT_OF_ORDER WHERE (SELECT deleted.product_id FROM deleted) = PRODUCT_OF_ORDER.product_id
+	DELETE FROM CART_PRODUCT WHERE (SELECT deleted.product_id FROM deleted) = CART_PRODUCT.product_id
+END
+
+

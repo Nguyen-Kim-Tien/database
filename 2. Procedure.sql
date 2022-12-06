@@ -1394,18 +1394,6 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE updatePRODUCT_OF_ORDER
-		@order_id char(10),
-		@product_id char(10),
-		@amount int	
-AS
-BEGIN
-	UPDATE PRODUCT_OF_ORDER
-	SET amount = @amount
-	WHERE order_id = @order_id and product_id = @product_id
-END
-GO
-
 CREATE PROCEDURE deletePRODUCT_OF_ORDER
 		@order_id char(10),
 		@product_id char(10)
@@ -1415,3 +1403,15 @@ BEGIN
 	WHERE order_id = @order_id and product_id = @product_id
 END
 GO
+
+CREATE PROCEDURE updatePRODUCT_OF_ORDER
+		@order_id char(10),
+		@product_id char(10),
+		@amount int	
+AS
+BEGIN
+	EXEC deletePRODUCT_OF_ORDER @order_id, @product_id
+	EXEC insertPRODUCT_OF_ORDER @order_id, @product_id, @amount
+END
+GO
+

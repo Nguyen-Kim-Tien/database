@@ -3,7 +3,7 @@ GO
 
 -- Thủ tục: Hiển thị những khách hàng tiềm năng (tham số đầu vào: tổng tiền tối thiểu đã mua tại cửa hàng)
 -- In ra tổng số tiền đã mua tại cửa hàng và tổng tiền lớn nhất 1 hóa đơn mà người đó mua 
-ALTER PROCEDURE Potential_Customers
+CREATE PROCEDURE Potential_Customers
 		@money money
 AS
 BEGIN 
@@ -18,7 +18,7 @@ END
 GO
 
 -- Thủ tục: Hiện thị những sản phẩm bán chạy, và danh mục tương ứng của sản phẩm đó (tham số đầu vào: số lượng tối thiểu đã bán) 
-ALTER PROCEDURE Bestseller
+CREATE PROCEDURE Bestseller
 		@amount int
 AS
 BEGIN
