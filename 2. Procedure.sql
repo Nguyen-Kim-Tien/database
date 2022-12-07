@@ -39,7 +39,12 @@ CREATE PROCEDURE updateCUSTOMER
 		@_address nvarchar(100)
 AS
 BEGIN
-	IF (@sex <> N'F' and @sex <> N'M' and @sex <> N'Male' and @sex <> N'Female' and @sex <> N'Nam' and @sex <> N'Nữ')
+	IF (NOT EXISTS(SELECT * FROM CUSTOMER WHERE customer_id = @customer_id))
+	BEGIN
+		raiserror(N'Khách hàng ko tồn tại', 16,1)
+		rollback
+	END
+	ELSE IF (@sex <> N'F' and @sex <> N'M' and @sex <> N'Male' and @sex <> N'Female' and @sex <> N'Nam' and @sex <> N'Nữ')
 	BEGIN
 		raiserror (N'Lỗi: Giới tính chỉ có thể là M/Male/F/Female/Nam/Nữ', 16,1)
 		rollback
@@ -65,8 +70,14 @@ CREATE PROCEDURE deleteCUSTOMER
 		@customer_id char(10)
 AS
 BEGIN
-	DELETE FROM CUSTOMER 
-	WHERE customer_id = @customer_id
+	IF (NOT EXISTS(SELECT * FROM CUSTOMER WHERE customer_id = @customer_id))
+	BEGIN
+		raiserror(N'Khách hàng ko tồn tại', 16,1)
+		rollback
+	END
+	ELSE
+		DELETE FROM CUSTOMER 
+		WHERE customer_id = @customer_id
 END
 GO
 
@@ -86,9 +97,15 @@ CREATE PROCEDURE updateCART
 		@customer_id char(10)
 AS
 BEGIN
-	UPDATE CART 
-	SET customer_id = @customer_id
-	WHERE cart_id = @cart_id
+	IF (NOT EXISTS(SELECT * FROM CART WHERE cart_id = @cart_id))
+	BEGIN
+		raiserror(N'Giỏ hàng ko tồn tại', 16,1)
+		rollback
+	END
+	ELSE
+		UPDATE CART 
+		SET customer_id = @customer_id
+		WHERE cart_id = @cart_id
 END
 GO
 
@@ -96,8 +113,14 @@ CREATE PROCEDURE deleteCART
 		@cart_id char(10)
 AS
 BEGIN
-	DELETE FROM CART 
-	WHERE cart_id = @cart_id
+	IF (NOT EXISTS(SELECT * FROM CART WHERE cart_id = @cart_id))
+	BEGIN
+		raiserror(N'Giỏ hàng ko tồn tại', 16,1)
+		rollback
+	END
+	ELSE
+		DELETE FROM CART 
+		WHERE cart_id = @cart_id
 END
 GO
 
@@ -205,7 +228,12 @@ CREATE PROCEDURE updateEMPLOYEE
 		@employee_manage_id char(10)
 AS
 BEGIN
-	IF (YEAR(GETDATE()) - YEAR(@bdate) <= 16)
+	IF (NOT EXISTS(SELECT * FROM EMPLOYEE WHERE employee_id = @employee_id))
+	BEGIN
+		raiserror(N'Nhân viên ko tồn tại', 16,1)
+		rollback
+	END
+	ELSE IF (YEAR(GETDATE()) - YEAR(@bdate) <= 16)
 	BEGIN
 		raiserror (N'Lỗi: Nhân viên phải trên 16 tuổi', 16,1)
 		rollback
@@ -246,7 +274,13 @@ CREATE PROCEDURE deleteEMPLOYEE
 		@employee_id char(10)
 AS
 BEGIN
-	DELETE FROM EMPLOYEE WHERE @employee_id = employee_id
+	IF (NOT EXISTS(SELECT * FROM EMPLOYEE WHERE employee_id = @employee_id))
+	BEGIN
+		raiserror(N'Nhân viên ko tồn tại', 16,1)
+		rollback
+	END
+	ELSE
+		DELETE FROM EMPLOYEE WHERE @employee_id = employee_id
 END
 GO
 
@@ -270,11 +304,17 @@ CREATE PROCEDURE updateBRANCH
 			@employee_id char(10)
 AS
 BEGIN
-	UPDATE BRANCH
-	SET	branch_name = @branch_name,
-		_address = @_address,
-		employee_id = @employee_id
-	WHERE branch_id = @branch_id
+	IF (NOT EXISTS(SELECT * FROM BRANCH WHERE branch_id = @branch_id))
+	BEGIN
+		raiserror(N'Chi nhánh ko tồn tại', 16,1)
+		rollback
+	END
+	ELSE
+		UPDATE BRANCH
+		SET	branch_name = @branch_name,
+			_address = @_address,
+			employee_id = @employee_id
+		WHERE branch_id = @branch_id
 END
 GO
 
@@ -282,7 +322,13 @@ CREATE PROCEDURE deleteBRANCH
 		@branch_id char(10)
 AS
 BEGIN
-	DELETE FROM BRANCH WHERE branch_id = @branch_id
+	IF (NOT EXISTS(SELECT * FROM BRANCH WHERE branch_id = @branch_id))
+	BEGIN
+		raiserror(N'Chi nhánh ko tồn tại', 16,1)
+		rollback
+	END
+	ELSE
+		DELETE FROM BRANCH WHERE branch_id = @branch_id
 END
 GO
 
@@ -435,7 +481,13 @@ CREATE PROCEDURE updateACCOUNT_CUS
 		@customer_id char(10)
 AS
 BEGIN
-	IF (LEN(@_password) < 8)
+	
+	IF (NOT EXISTS(SELECT * FROM ACCOUNT WHERE account_id = @account_id))
+	BEGIN
+		raiserror(N'Tài khỏan khách hàng ko tồn tại', 16,1)
+		rollback
+	END
+	ELSE IF (LEN(@_password) < 8)
 	BEGIN
 		raiserror (N'Lỗi: Mật khẩu phải chứa ít nhất 8 kí tự', 16,1)
 		rollback
@@ -509,7 +561,12 @@ CREATE PROCEDURE updateACCOUNT_EMP
 		@employee_id char(10)
 AS
 BEGIN
-	IF (LEN(@_password) < 8)
+	IF (NOT EXISTS(SELECT * FROM ACCOUNT WHERE account_id = @account_id))
+	BEGIN
+		raiserror(N'Tài khỏan nhân viên ko tồn tại', 16,1)
+		rollback
+	END
+	ELSE IF (LEN(@_password) < 8)
 	BEGIN
 		raiserror (N'Lỗi: Mật khẩu phải chứa ít nhất 8 kí tự', 16,1)
 		rollback
@@ -579,8 +636,14 @@ CREATE PROCEDURE deleteACCOUNT
 		@account_id char(10)
 AS
 BEGIN
-	DELETE FROM ACCOUNT 
-	WHERE account_id = @account_id
+	IF (NOT EXISTS(SELECT * FROM ACCOUNT WHERE account_id = @account_id))
+	BEGIN
+		raiserror(N'Tài khỏan ko tồn tại', 16,1)
+		rollback
+	END
+	ELSE 
+		DELETE FROM ACCOUNT 
+		WHERE account_id = @account_id
 END
 GO
 
@@ -649,9 +712,15 @@ CREATE PROCEDURE updateMATERIAL
 		@material_name nvarchar(30)
 AS
 BEGIN
-	UPDATE MATERIAL 
-	SET material_name = @material_name
-	WHERE material_id = @material_id
+	IF (NOT EXISTS(SELECT * FROM MATERIAL WHERE material_id = @material_id))
+	BEGIN
+		raiserror(N'Chất liệu ko tồn tại', 16,1)
+		rollback
+	END
+	ELSE 
+		UPDATE MATERIAL 
+		SET material_name = @material_name
+		WHERE material_id = @material_id
 END
 GO
 
@@ -659,7 +728,13 @@ CREATE PROCEDURE deleteMATERIAL
 		@material_id char(10)
 AS
 BEGIN
-	DELETE FROM MATERIAL WHERE material_id = @material_id
+	IF (NOT EXISTS(SELECT * FROM MATERIAL WHERE material_id = @material_id))
+	BEGIN
+		raiserror(N'Chất liệu ko tồn tại', 16,1)
+		rollback
+	END
+	ELSE 
+		DELETE FROM MATERIAL WHERE material_id = @material_id
 END
 GO
 
@@ -700,9 +775,15 @@ CREATE PROCEDURE updateCATEGORY
 		@category_name nvarchar(30)
 AS
 BEGIN
-	UPDATE CATEGORY 
-	SET category_name = @category_name
-	WHERE category_id = @category_id
+	IF (NOT EXISTS(SELECT * FROM CATEGORY WHERE category_id = @category_id))
+	BEGIN
+		raiserror(N'Danh mục ko tồn tại', 16,1)
+		rollback
+	END
+	ELSE 
+		UPDATE CATEGORY 
+		SET category_name = @category_name
+		WHERE category_id = @category_id
 END
 GO
 
@@ -710,7 +791,13 @@ CREATE PROCEDURE deleteCATEGORY
 		@category_id char(10)
 AS
 BEGIN
-	DELETE FROM CATEGORY WHERE category_id = @category_id
+	IF (NOT EXISTS(SELECT * FROM CATEGORY WHERE category_id = @category_id))
+	BEGIN
+		raiserror(N'Danh mục ko tồn tại', 16,1)
+		rollback
+	END
+	ELSE 
+		DELETE FROM CATEGORY WHERE category_id = @category_id
 END
 GO
 
@@ -852,31 +939,18 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE update_ORDER
-		@order_id char(10),
-		@order_name nvarchar(30),
-		@order_date DATE,
-		@order_hour TIME,
-		@customer_id char(10),
-		@employee_id char(10)	
-AS
-BEGIN
-	UPDATE _ORDER
-	SET order_name = @order_name,
-		order_date = @order_date,
-		order_hour = @order_hour,
-		customer_id = @customer_id,
-		employee_id = @employee_id
-	WHERE order_id = @order_id
-END
-GO
-
 CREATE PROCEDURE delete_ORDER	
 		@order_id char(10)
 AS
 BEGIN
-	DELETE FROM _ORDER
-	WHERE order_id = @order_id
+	IF (NOT EXISTS(SELECT * FROM _ORDER WHERE order_id = @order_id))
+	BEGIN
+		raiserror(N'Đơn hàng ko tồn tại', 16,1)
+		rollback
+	END
+	ELSE 
+		DELETE FROM _ORDER
+		WHERE order_id = @order_id
 END
 GO
 
@@ -963,7 +1037,12 @@ CREATE PROCEDURE updatePROMOTION
 		@branch_id char(10)
 AS
 BEGIN
-	IF (DATEDIFF(DD,@_start_date,@end_date) <= 0)
+	IF (NOT EXISTS(SELECT * FROM PROMOTION WHERE promotion_id = @promotion_id))
+	BEGIN
+		raiserror(N'Khuyến mãi ko tồn tại', 16,1)
+		rollback
+	END
+	ELSE IF (DATEDIFF(DD,@_start_date,@end_date) <= 0)
 	BEGIN
 		raiserror (N'Lỗi: Ngày kết thúc khuyến mãi phải sau ngày bắt đầu KM', 16,1)
 		rollback
@@ -999,8 +1078,14 @@ CREATE PROCEDURE deletePROMOTION
 	@promotion_id char(10)
 AS
 BEGIN
-	DELETE FROM PROMOTION 
-	WHERE promotion_id = @promotion_id
+	IF (NOT EXISTS(SELECT * FROM PROMOTION WHERE promotion_id = @promotion_id))
+	BEGIN
+		raiserror(N'Khuyến mãi ko tồn tại', 16,1)
+		rollback
+	END
+	ELSE
+		DELETE FROM PROMOTION 
+		WHERE promotion_id = @promotion_id
 END
 GO
 
@@ -1034,16 +1119,22 @@ CREATE PROCEDURE updatePAYMENT
 		@promotion_id char(10)
 AS
 BEGIN
-	UPDATE PAYMENT
-	SET payment_note = @payment_note, 
-		payment_status = @payment_status, 
-		payment_method = @payment_method, 
-		payment_date = @payment_date, 
-		payment_hour = @payment_hour,  
-		order_id = @order_id, 
-		customer_id = customer_id,
-		promotion_id = @promotion_id
-	WHERE payment_id = @payment_id
+	IF (NOT EXISTS(SELECT * FROM PAYMENT WHERE payment_id = @payment_id))
+	BEGIN
+		raiserror(N'Hóa đơn ko tồn tại', 16,1)
+		rollback
+	END
+	ELSE
+		UPDATE PAYMENT
+		SET payment_note = @payment_note, 
+			payment_status = @payment_status, 
+			payment_method = @payment_method, 
+			payment_date = @payment_date, 
+			payment_hour = @payment_hour,  
+			order_id = @order_id, 
+			customer_id = customer_id,
+			promotion_id = @promotion_id
+		WHERE payment_id = @payment_id
 END
 GO
 
@@ -1051,8 +1142,14 @@ CREATE PROCEDURE deletePAYMENT
 		@payment_id char(10)
 AS
 BEGIN
-	DELETE FROM PAYMENT 
-	WHERE payment_id = @payment_id
+	IF (NOT EXISTS(SELECT * FROM PAYMENT WHERE payment_id = @payment_id))
+	BEGIN
+		raiserror(N'Hóa đơn ko tồn tại', 16,1)
+		rollback
+	END
+	ELSE
+		DELETE FROM PAYMENT 
+		WHERE payment_id = @payment_id
 END
 GO
 
@@ -1245,7 +1342,12 @@ CREATE PROCEDURE updatePRODUCT
 		@supplier_id char(10)
 AS
 BEGIN
-	IF (@sell_price < @entry_price)
+	IF (NOT EXISTS(SELECT * FROM PRODUCT WHERE product_id = @product_id))
+	BEGIN
+		raiserror(N'Sản phẩm ko tồn tại', 16,1)
+		rollback
+	END
+	ELSE IF (@sell_price < @entry_price)
 	BEGIN
 		raiserror (N'Lỗi: Giá nhập không thể lớn hơn giá bán', 16,1)
 		rollback
@@ -1267,8 +1369,14 @@ CREATE PROCEDURE deletePRODUCT
 		@product_id char(10)	
 AS
 BEGIN
-	DELETE FROM PRODUCT
-	WHERE product_id = @product_id
+	IF (NOT EXISTS(SELECT * FROM PRODUCT WHERE product_id = @product_id))
+	BEGIN
+		raiserror(N'Sản phẩm ko tồn tại', 16,1)
+		rollback
+	END
+	ELSE
+		DELETE FROM PRODUCT
+		WHERE product_id = @product_id
 END
 GO
 
@@ -1290,10 +1398,16 @@ CREATE PROCEDURE updateCART_PRODUCT
 		@amount int
 AS
 BEGIN
-	UPDATE CART_PRODUCT
-	SET cart_id = @cart_id,
-		amount = @amount
-	WHERE product_id = @product_id
+	IF (NOT EXISTS(SELECT * FROM CART_PRODUCT WHERE product_id = @product_id and cart_id = @cart_id))
+	BEGIN
+		raiserror(N'Sản phẩm trong giỏ hàng ko tồn tại', 16,1)
+		rollback
+	END
+	ELSE
+		UPDATE CART_PRODUCT
+		SET cart_id = @cart_id,
+			amount = @amount
+		WHERE product_id = @product_id
 END
 GO
 
@@ -1302,8 +1416,14 @@ CREATE PROCEDURE deleteCART_PRODUCT
 		@cart_id char(10)
 AS
 BEGIN
-	DELETE FROM CART_PRODUCT
-	WHERE product_id = @product_id and cart_id = @cart_id
+	IF (NOT EXISTS(SELECT * FROM CART_PRODUCT WHERE product_id = @product_id and cart_id = @cart_id))
+	BEGIN
+		raiserror(N'Sản phẩm trong giỏ hàng ko tồn tại', 16,1)
+		rollback
+	END
+	ELSE
+		DELETE FROM CART_PRODUCT
+		WHERE product_id = @product_id and cart_id = @cart_id
 END
 GO
 
@@ -1399,8 +1519,14 @@ CREATE PROCEDURE deletePRODUCT_OF_ORDER
 		@product_id char(10)
 AS
 BEGIN
-	DELETE FROM PRODUCT_OF_ORDER
-	WHERE order_id = @order_id and product_id = @product_id
+	IF (NOT EXISTS(SELECT * FROM PRODUCT_OF_ORDER WHERE product_id = @product_id and order_id = @order_id))
+	BEGIN
+		raiserror(N'Sản phẩm trong đơn hàng ko tồn tại', 16,1)
+		rollback
+	END
+	ELSE
+		DELETE FROM PRODUCT_OF_ORDER
+		WHERE order_id = @order_id and product_id = @product_id
 END
 GO
 
@@ -1410,8 +1536,16 @@ CREATE PROCEDURE updatePRODUCT_OF_ORDER
 		@amount int	
 AS
 BEGIN
-	EXEC deletePRODUCT_OF_ORDER @order_id, @product_id
-	EXEC insertPRODUCT_OF_ORDER @order_id, @product_id, @amount
+	IF (NOT EXISTS(SELECT * FROM PRODUCT_OF_ORDER WHERE product_id = @product_id and order_id = @order_id))
+	BEGIN
+		raiserror(N'Sản phẩm trong đơn hàng ko tồn tại', 16,1)
+		rollback
+	END
+	ELSE
+	BEGIN 
+		EXEC deletePRODUCT_OF_ORDER @order_id, @product_id
+		EXEC insertPRODUCT_OF_ORDER @order_id, @product_id, @amount
+	END
 END
 GO
 

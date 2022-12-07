@@ -7,7 +7,7 @@ EXEC insertCUSTOMER 'CUS0001', '20220112', N'Nguyễn Văn', 	N'Đức',	N'Nam',
 GO
 EXEC insertCUSTOMER 'CUS0002', '20220117', N'Nguyễn Đình',	N'Duy',	N'Nam',	'20020512',	N'An Phú,Thủ Đức,TPHCM'
 GO
-EXEC insertCUSTOMER 'CUS0003', '20220129', N'Hà Huy',	N'Nam',	N'Nam',	'20021119',	N'An Phú,Thủ Đức,TPHCM'
+EXEC insertCUSTOMER 'CUS0003', '20220126', N'Hà Huy',	N'Nam',	N'Nam',	'20021119',	N'An Phú,Thủ Đức,TPHCM'
 GO
 EXEC insertCUSTOMER 'CUS0004', '20220202', N'Dương Nhật',	N'Văn',	N'Nam',	'20041103',	N'An Phú,Thủ Đức,TPHCM'
 GO
@@ -1938,7 +1938,7 @@ EXEC insertPAYMENT 'PAY0006',  N'Ghi chú 6',   N'Trạng thái 6',  N'Phương 
 GO
 EXEC insertPAYMENT 'PAY0007',  N'Ghi chú 7',   N'Trạng thái 7',  N'Phương thức 7',  '20221010',  '12:12', 'ORD0007', 'CUS0007', 'PRO0002'
 GO
-EXEC insertPAYMENT 'PAY0008',  N'Ghi chú 8',   N'Trạng thái 8',  N'Phương thức 8',  '20221010',  '12:12', 'ORD0001', 'CUS0008', 'PRO0001'
+EXEC insertPAYMENT 'PAY0008',  N'Ghi chú 8',   N'Trạng thái 8',  N'Phương thức 8',  '20221010',  '12:12', 'ORD0008', 'CUS0008', 'PRO0001'
 GO
 EXEC insertPAYMENT 'PAY0009',  N'Ghi chú 9',   N'Trạng thái 9',  N'Phương thức 9',  '20221010',  '12:12', 'ORD0009', 'CUS0009', 'PRO0003'
 GO

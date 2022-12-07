@@ -34,4 +34,5 @@ SELECT * FROM _ORDER;
 SELECT * FROM PAYMENT
 
 -- Kiểm tra các kết quả tính toán 
-SELECT o.total_money,p.promotion_id,dbo.TinhKM(p.order_id,p.promotion_id) as KM_money ,p.total_money FROM _ORDER o, PAYMENT p WHERE o.order_id = p.order_id
+SELECT o.total_money,p.promotion_id, pr.min_money as Min_promotion, pr.max_money as Max_promotion, pr.promotion_percent as PhanTram,dbo.TinhKM(p.order_id,p.promotion_id) as KM_money ,p.total_money FROM _ORDER o, PAYMENT p, PROMOTION pr WHERE o.order_id = p.order_id and pr.promotion_id = p.promotion_id
+GO

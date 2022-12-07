@@ -17,20 +17,6 @@ BEGIN
 END
 GO*/
 
--- Bảng PRODUCT_OF_ORDER (liên quan đến PRODUCT)
-CREATE TRIGGER tri_productoforder
-ON PRODUCT_OF_ORDER
-FOR INSERT, UPDATE
-AS
-BEGIN
-	IF EXISTS(SELECT * FROM INSERTED, PRODUCT, PRODUCT_OF_ORDER WHERE PRODUCT_OF_ORDER.amount > PRODUCT.amount and INSERTED.product_id = PRODUCT.product_id)
-	BEGIN
-		raiserror (N'Lỗi:Số lượng sản phẩm của mã SP này ko còn đủ số lượng', 16,1)
-		rollback
-	END
-END
-GO
-
 /*
 CREATE FUNCTION GetPromotionId(@money money)
 RETURNS char(10)
@@ -177,6 +163,13 @@ ON PRODUCT_OF_ORDER
 FOR INSERT
 AS
 BEGIN
+	IF EXISTS(SELECT * FROM INSERTED, PRODUCT WHERE INSERTED.amount > PRODUCT.amount and INSERTED.product_id = PRODUCT.product_id)
+	BEGIN
+		raiserror (N'Lỗi:Số lượng sản phẩm của mã SP này ko còn đủ số lượng', 16,1)
+		rollback
+	END
+	ELSE
+	BEGIN 
 	UPDATE PRODUCT_OF_ORDER
 	SET PRODUCT_OF_ORDER.sell_price = PRODUCT.sell_price FROM PRODUCT WHERE PRODUCT_OF_ORDER.product_id = PRODUCT.product_id
 	
@@ -191,7 +184,7 @@ BEGIN
 
 	UPDATE PRODUCT 
 	SET PRODUCT.amount = PRODUCT.amount - INSERTED.amount FROM INSERTED WHERE INSERTED.product_id = PRODUCT.product_id
-	
+	END
 END
 GO
 
@@ -200,6 +193,13 @@ ON PRODUCT_OF_ORDER
 FOR UPDATE
 AS
 BEGIN
+	IF EXISTS(SELECT * FROM INSERTED, PRODUCT WHERE INSERTED.amount > PRODUCT.amount and INSERTED.product_id = PRODUCT.product_id)
+	BEGIN
+		raiserror (N'Lỗi:Số lượng sản phẩm của mã SP này ko còn đủ số lượng', 16,1)
+		rollback
+	END
+	ELSE 
+	BEGIN 
 	UPDATE PRODUCT_OF_ORDER
 	SET PRODUCT_OF_ORDER.sell_price = PRODUCT.sell_price FROM PRODUCT WHERE PRODUCT_OF_ORDER.product_id = PRODUCT.product_id
 	
@@ -214,6 +214,7 @@ BEGIN
 
 	UPDATE PRODUCT 
 	SET PRODUCT.amount = PRODUCT.amount - (INSERTED.amount - PRODUCT_OF_ORDER.amount) FROM INSERTED, PRODUCT_OF_ORDER WHERE INSERTED.product_id = PRODUCT.product_id and PRODUCT.product_id = PRODUCT_OF_ORDER.product_id
+	END 
 END
 GO
 
